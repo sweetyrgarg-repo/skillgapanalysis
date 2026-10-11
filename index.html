@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PathFinder AI - Maharashtra Student & Faculty Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Top Navigation -->
+    <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 p-2 rounded-lg text-xl font-bold"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-tight">PathFinder AI</span>
+                    <span class="text-xs block text-indigo-300">Maharashtra Higher Education Cell</span>
+                </div>
+            </div>
+            <div id="nav-user-info" class="hidden items-center space-x-4">
+                <span id="nav-display-name" class="text-sm font-medium bg-indigo-800 px-3 py-1 rounded-full border border-indigo-700"></span>
+                <button onclick="logout()" class="text-xs bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded-lg transition font-medium">
+                    <i class="fa-solid fa-arrow-right-from-bracket mr-1"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+
+        <!-- VIEW 1: AUTH & ROLE LOGIN -->
+        <section id="view-auth" class="max-w-md mx-auto bg-white rounded-2xl shadow-xl border border-slate-100 p-8 my-8">
+            <div class="text-center mb-6">
+                <div class="inline-block p-3 bg-indigo-50 text-indigo-600 rounded-2xl text-3xl mb-3"><i class="fa-solid fa-id-card"></i></div>
+                <h1 class="text-2xl font-bold text-slate-900">Portal Authentication</h1>
+                <p class="text-sm text-slate-500 mt-1">Select your role to access student career discovery or faculty review tools.</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 mb-6 bg-slate-100 p-1 rounded-xl">
+                <button onclick="switchRoleTab('student')" id="tab-student" class="py-2 text-xs font-bold rounded-lg bg-white text-indigo-900 shadow-sm transition">Student Portal</button>
+                <button onclick="switchRoleTab('mentor')" id="tab-mentor" class="py-2 text-xs font-bold rounded-lg text-slate-600 transition">Faculty Mentor</button>
+            </div>
+
+            <div id="form-student" class="space-y-4">
+                <div id="auth-step-1" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Full Name</label>
+                        <input type="text" id="login-name" placeholder="e.g. Rohan Deshmukh" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Mobile Number</label>
+                        <div class="flex">
+                            <span class="inline-flex items-center px-3 bg-slate-100 border border-r-0 border-slate-300 rounded-l-xl text-slate-600 text-sm font-medium">+91</span>
+                            <input type="tel" id="login-phone" maxlength="10" placeholder="9876543210" class="w-full px-4 py-2.5 rounded-r-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">College in Maharashtra</label>
+                        <select id="login-college" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm bg-white">
+                            <option value="">Select your institution...</option>
+                            <option value="COEP Technological University, Pune">COEP Technological University, Pune</option>
+                            <option value="VJTI, Mumbai">VJTI, Mumbai</option>
+                            <option value="SPIT, Mumbai">SPIT, Mumbai</option>
+                            <option value="Nagindas Khandwala College, Mumbai">Nagindas Khandwala College, Mumbai</option>
+                            <option value="HR College of Commerce & Economics, Mumbai">HR College of Commerce & Economics, Mumbai</option>
+                            <option value="St. Xavier's College, Mumbai">St. Xavier's College, Mumbai</option>
+                            <option value="Fergusson College, Pune">Fergusson College, Pune</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Primary Stream</label>
+                        <select id="login-stream" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm bg-white">
+                            <option value="">Select your primary stream...</option>
+                            <option value="STEAM">STEAM (Science, Technology, Engineering, Applied Math)</option>
+                            <option value="Commerce">Commerce & Business Management</option>
+                            <option value="Arts & Humanities">Arts, Humanities & Social Sciences</option>
+                        </select>
+                    </div>
+                    <button onclick="requestOTP()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition shadow-lg mt-2">
+                        Send Verification OTP <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+
+                <div id="auth-step-2" class="hidden space-y-4">
+                    <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl text-center">
+                        <p class="text-xs text-indigo-800">Demo OTP sent to <span id="display-phone-num" class="font-bold"></span></p>
+                        <p class="text-xs text-emerald-700 font-semibold mt-1">Hint: Enter any 4-digit code (e.g. 1234)</p>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1 text-center">Enter 4-Digit OTP</label>
+                        <input type="text" id="login-otp" maxlength="4" placeholder="1234" class="w-36 mx-auto block text-center text-2xl tracking-widest px-4 py-2 rounded-xl border border-slate-300 font-bold">
+                    </div>
+                    <button onclick="verifyOTP()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl transition shadow-lg">
+                        Verify & Enter Portal <i class="fa-solid fa-check ml-2"></i>
+                    </button>
+                    <button onclick="resetAuth()" class="w-full text-xs text-slate-500 hover:text-indigo-600 mt-2">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> Change details
+                    </button>
+                </div>
+            </div>
+
+            <div id="form-mentor" class="hidden space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Faculty Email</label>
+                    <input type="email" id="mentor-email" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm" value="rajesh.sharma@maharashtra.edu.in">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Password</label>
+                    <input type="password" id="mentor-pass" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm" value="mentor123">
+                </div>
+                <button onclick="loginMentor()" class="w-full bg-indigo-900 hover:bg-indigo-800 text-white font-semibold py-3 rounded-xl transition shadow-lg mt-2">
+                    Access Faculty Review Dashboard <i class="fa-solid fa-chalkboard-user ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- VIEW 2: INTEREST SURVEY & SKILL ASSESSMENT -->
+        <section id="view-survey" class="hidden max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-100 p-8 my-6">
+            <div class="border-b border-slate-100 pb-4 mb-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold text-slate-900">Comprehensive Interest & Skill Survey</h2>
+                    <p class="text-xs text-slate-500 mt-0.5">Stream: <span id="survey-stream-label" class="font-bold text-indigo-600"></span></p>
+                </div>
+                <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full">Step 1 of 2</span>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-slate-800 mb-1">1. Select Your Top <span class="text-indigo-600 font-extrabold">2 Passion Domains</span></label>
+                    <div id="passion-checkboxes" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-800 mb-2">2. Rate Your Current Technical/Analytical Comfort Level</label>
+                    <div class="grid grid-cols-3 gap-3">
+                        <label class="border rounded-xl p-3 text-center cursor-pointer hover:border-indigo-600 transition flex flex-col items-center">
+                            <input type="radio" name="skill_level" value="Beginner" class="mb-1 text-indigo-600">
+                            <span class="text-xs font-bold text-slate-700">Beginner</span>
+                        </label>
+                        <label class="border rounded-xl p-3 text-center cursor-pointer hover:border-indigo-600 transition flex flex-col items-center">
+                            <input type="radio" name="skill_level" value="Intermediate" class="mb-1 text-indigo-600">
+                            <span class="text-xs font-bold text-slate-700">Intermediate</span>
+                        </label>
+                        <label class="border rounded-xl p-3 text-center cursor-pointer hover:border-indigo-600 transition flex flex-col items-center">
+                            <input type="radio" name="skill_level" value="Advanced" class="mb-1 text-indigo-600">
+                            <span class="text-xs font-bold text-slate-700">Advanced</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="border-t border-slate-100 pt-6">
+                    <h3 class="text-sm font-extrabold uppercase tracking-wider text-indigo-900 mb-4"><i class="fa-solid fa-bolt text-amber-500 mr-2"></i> Skill Assessment (5 Dynamic Questions)</h3>
+                    <div id="dynamic-assessment-container" class="space-y-6"></div>
+                </div>
+                <button onclick="submitSurvey()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-xl transition shadow-lg mt-6">
+                    Run AI Career & Skill-Gap Analysis <i class="fa-solid fa-wand-magic-sparkles ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- VIEW 3: AI CAREER RANKING & CAREER DB -->
+        <section id="view-dashboard" class="hidden space-y-8 my-4">
+            <div class="bg-gradient-to-r from-indigo-900 to-indigo-800 text-white rounded-2xl p-6 shadow-xl relative">
+                <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <div class="text-indigo-300 text-xs font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-microchip"></i> Dynamic Cohort Match Engine v4.9</div>
+                        <h2 class="text-2xl font-black">AI Career Rankings & Match Analysis</h2>
+                        <p class="text-sm text-indigo-100 mt-1 max-w-2xl">Evaluated across 30+ specialized career options based on your unique multi-passion choices.</p>
+                    </div>
+                    <button id="btn-retake-survey" onclick="retakeSurvey()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-4 py-2.5 rounded-xl border border-white/20 transition">
+                        <i class="fa-solid fa-rotate-right mr-1.5"></i> Retake Survey
+                    </button>
+                </div>
+            </div>
+            <div>
+                <h3 class="text-lg font-bold text-slate-900 mb-4 flex items-center"><i class="fa-solid fa-ranking-star text-indigo-600 mr-2"></i> Top 3 Recommended Career Paths</h3>
+                <div id="career-rankings-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-6">
+                <div class="flex justify-between items-center mb-4 border-b border-slate-100 pb-3">
+                    <h3 class="text-lg font-bold text-slate-900">Verified Career Database (30+ Roles)</h3>
+                    <input type="text" id="career-search" onkeyup="filterCareerDB()" placeholder="Search career DB..." class="px-3 py-1.5 text-xs rounded-lg border border-slate-300 w-48">
+                </div>
+                <div id="career-db-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+        </section>
+
+        <!-- VIEW 4: 12-WEEK ROADMAP -->
+        <section id="view-roadmap" class="hidden space-y-6 my-4">
+            <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <button onclick="backToDashboard()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 mb-2 inline-flex items-center"><i class="fa-solid fa-arrow-left mr-1.5"></i> Back to Rankings</button>
+                    <h2 class="text-2xl font-black text-slate-900" id="roadmap-career-title">12-Week Skill-Gap Learning Plan</h2>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <a id="naukri-portal-link" href="#" target="_blank" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition flex items-center shadow">
+                        <i class="fa-solid fa-briefcase mr-2"></i> Search Jobs on Naukri <i class="fa-solid fa-external-link ml-1.5 text-[10px]"></i>
+                    </a>
+                    <div id="mentor-status-badge" class="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-2 rounded-xl text-xs font-bold flex items-center">
+                        <i class="fa-solid fa-circle-exclamation mr-2 text-amber-600"></i> Pending Faculty Mentor Review
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-4" id="weeks-container"></div>
+            <div class="bg-indigo-900 text-white rounded-2xl p-6 shadow-xl mt-6">
+                <div class="max-w-2xl">
+                    <h3 class="text-lg font-bold">Faculty Mentor Review & Consultation</h3>
+                    <p class="text-xs text-indigo-200 mt-1 mb-4">Submit your roadmap to your assigned college faculty mentor for approval before locking.</p>
+                </div>
+                <div class="bg-white/10 rounded-xl p-4 border border-white/20 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="text-xs text-indigo-100">
+                        <p class="font-bold text-white text-sm"><i class="fa-solid fa-chalkboard-user mr-2 text-amber-400"></i> Assigned Mentor: Dr. Rajesh Sharma</p>
+                        <p class="mt-1">Institution: <span id="mentor-college-text">Maharashtra College</span></p>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button onclick="requestMentorReview()" id="btn-request-review" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow">Submit for Review</button>
+                        <button onclick="lockPathway()" id="btn-lock-pathway" disabled class="bg-slate-600 text-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl cursor-not-allowed transition">Lock Pathway</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 5: FACULTY MENTOR DASHBOARD -->
+        <section id="view-mentor-dashboard" class="hidden space-y-6 my-4">
+            <div class="bg-indigo-900 text-white rounded-2xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <span class="bg-indigo-600 text-indigo-100 text-xs font-bold px-3 py-1 rounded-full uppercase">Faculty Portal</span>
+                    <h2 class="text-2xl font-black mt-2">Mentor Review & Approval Queue</h2>
+                </div>
+                <button onclick="renderMentorSubmissions()" class="bg-white text-indigo-900 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-indigo-50 transition"><i class="fa-solid fa-rotate mr-1"></i> Refresh Queue</button>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md border p-6">
+                <h3 class="text-base font-bold text-slate-900 mb-4"><i class="fa-solid fa-clipboard-list text-indigo-600 mr-2"></i> Pending Review Queue</h3>
+                <div id="mentor-submissions-list" class="space-y-4"></div>
+            </div>
+            <div class="bg-white rounded-2xl shadow-md border p-6 mt-6">
+                <h3 class="text-base font-bold text-emerald-800 mb-4"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> Approved Student Pathways</h3>
+                <div id="mentor-approved-list" class="space-y-4"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-6 mt-12 border-t border-slate-800 text-center text-xs">
+        <p>&copy; 2026 PathFinder AI Platform. Empowering Students Across Maharashtra.</p>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        let currentUser = { name: '', phone: '', college: '', stream: '' };
+        let surveyData = { passions: [], skillLevel: '', assessmentAnswers: {}, completedMilestones: [] };
+        let currentDynamicQuestions = [];
+        let currentRankedCareers = [];
+        let selectedCareer = null;
+        let mentorStatus = 'not_submitted';
+        let isPathwayLocked = false;
+
+        const streamPassions = {
+            "STEAM": [
+                { id: "ai_ml", label: "Artificial Intelligence & Machine Learning" },
+                { id: "full_stack", label: "Full-Stack Software Development" },
+                { id: "cyber_sec", label: "Cybersecurity & Cloud Architecture" },
+                { id: "core_eng", label: "Core Engineering & Automation (IoT/Robotics)" },
+                { id: "data_sci", label: "Data Science & Big Data Analytics" },
+                { id: "devops", label: "DevOps & SRE Infrastructure" }
+            ],
+            "Commerce": [
+                { id: "fin_tech", label: "Financial Technology & Investment Banking" },
+                { id: "digital_mkt", label: "Digital Marketing & Brand Strategy" },
+                { id: "biz_analytics", label: "Business Analytics & Enterprise Intelligence" },
+                { id: "supply_chain", label: "Global Supply Chain & Logistics Management" },
+                { id: "entrepreneurship", label: "Startup Venture Capital & Entrepreneurship" },
+                { id: "fin_accounting", label: "Corporate Accounting & Taxation" }
+            ],
+            "Arts & Humanities": [
+                { id: "ui_ux", label: "UI/UX Product Design & User Research" },
+                { id: "content_media", label: "Digital Media Production & Content Strategy" },
+                { id: "public_policy", label: "Public Policy, Governance & Social Research" },
+                { id: "psychology", label: "Applied Psychology & Behavioral Insights" },
+                { id: "corporate_comm", label: "Corporate Communications & PR" },
+                { id: "fine_arts", label: "Visual Arts, Animation & Multimedia" }
+            ]
+        };
+
+        const questionBank = {
+            "STEAM": [
+                { id: "st_1", domain: "ai_ml", text: "How comfortable are you implementing matrix multiplication and gradient descent formulas?", options: ["Unfamiliar with calculus", "Understand concept theoretically", "Can code implementation from scratch"] },
+                { id: "st_2", domain: "ai_ml", text: "Have you trained any pre-trained models using HuggingFace or PyTorch?", options: ["No experience", "Fine-tuned existing models", "Built custom architectures"] },
+                { id: "st_3", domain: "full_stack", text: "What is your experience with React state management (Redux / Context API)?", options: ["Basic component props only", "Used React Hooks & Context", "Built full production apps with Redux"] },
+                { id: "st_4", domain: "full_stack", text: "How do you handle asynchronous error handling in Node.js / Express?", options: ["Basic try/catch blocks", "Custom error middleware classes", "Advanced event-driven error logging"] },
+                { id: "st_5", domain: "cyber_sec", text: "Are you familiar with OWASP Top 10 web application vulnerabilities?", options: ["Never heard of it", "Aware of SQL injection/XSS", "Can perform vulnerability remediation"] },
+                { id: "st_6", domain: "cyber_sec", text: "Have you configured IAM roles, VPCs, and firewall security groups in AWS or Azure?", options: ["No cloud exposure", "Basic console walkthrough", "Automated via Terraform / CLI"] },
+                { id: "st_7", domain: "core_eng", text: "What is your proficiency with microcontroller programming (Arduino / Raspberry Pi / ESP32)?", options: ["Theoretical knowledge", "Built basic sensor projects", "Developed IoT telemetry dashboards"] },
+                { id: "st_8", domain: "core_eng", text: "How comfortable are you with CAD modeling (SolidWorks / AutoCAD)?", options: ["Beginner drafts", "Moderate assemblies", "Complex parametric modeling"] },
+                { id: "st_9", domain: "data_sci", text: "How proficient are you in handling missing data and outliers using Pandas?", options: ["Drop rows blindly", "Basic imputation methods", "Advanced multivariate imputation & EDA"] },
+                { id: "st_10", domain: "data_sci", text: "Are you familiar with hypothesis testing (Chi-square, ANOVA, T-test)?", options: ["Need a refresher", "Understand p-values and alpha", "Apply tests regularly in data projects"] },
+                { id: "st_11", domain: "devops", text: "Have you containerized applications using Docker and Docker Compose?", options: ["Never used Docker", "Run basic pre-built containers", "Wrote custom Dockerfiles and multi-container setups"] },
+                { id: "st_12", domain: "devops", text: "Are you familiar with CI/CD pipeline automation tools (GitHub Actions / Jenkins)?", options: ["Manual deployment only", "Used basic GitHub actions templates", "Built automated test and deploy pipelines"] },
+                { id: "st_13", domain: "ai_ml", text: "How well do you understand data normalization, scaling, and feature engineering?", options: ["Unfamiliar", "Know StandardScaler and MinMaxScaler", "Built custom domain feature extractors"] },
+                { id: "st_14", domain: "full_stack", text: "What database indexing and query optimization techniques do you apply?", options: ["None", "Basic primary/foreign keys", "Composite indexes and execution plan analysis"] }
+            ],
+            "Commerce": [
+                { id: "co_1", domain: "fin_tech", text: "How comfortable are you building Discounted Cash Flow (DCF) valuation models?", options: ["Never built one", "Built simple academic models", "Built professional DCF models with sensitivity tables"] },
+                { id: "co_2", domain: "fin_tech", text: "What is your familiarity with algorithmic trading APIs and backtesting?", options: ["No coding background", "Basic Python script execution", "Built live backtested trading strategies"] },
+                { id: "co_3", domain: "digital_mkt", text: "Have you managed paid ad campaigns on Meta or Google Ads?", options: ["Never managed ads", "Analyzed dummy campaigns", "Managed active budgets with ROAS targets"] },
+                { id: "co_4", domain: "digital_mkt", text: "What is your approach to keyword cannibalization and technical SEO audits?", options: ["Unfamiliar with SEO", "Know basic meta tags", "Conducted full site audits using SEMrush/Ahrefs"] },
+                { id: "co_5", domain: "biz_analytics", text: "How proficient are you in creating interactive executive dashboards in Tableau or Power BI?", options: ["Basic Excel charts", "Built simple dashboards", "Connected live SQL databases with DAX measures"] },
+                { id: "co_6", domain: "biz_analytics", text: "Can you write complex SQL queries involving window functions and CTEs?", options: ["Basic SELECT statements", "Joins and GROUP BY", "Advanced CTEs and ranking window functions"] },
+                { id: "co_7", domain: "supply_chain", text: "How familiar are you with Economic Order Quantity (EOQ) and inventory optimization?", options: ["Theoretical textbook knowledge", "Basic spreadsheet simulation", "Implemented enterprise supply chain models"] },
+                { id: "co_8", domain: "supply_chain", text: "Do you understand global logistics Incoterms and customs compliance?", options: ["Unfamiliar", "Basic awareness", "Thorough understanding of FOB, CIF, and customs"] },
+                { id: "co_9", domain: "entrepreneurship", text: "Have you drafted a pitch deck or financial runway projection for a startup idea?", options: ["Never attempted", "Academic presentation deck", "Investor-ready pitch deck with unit economics"] },
+                { id: "co_10", domain: "fin_accounting", text: "How comfortable are you reconciling complex general ledgers and preparing tax schedules?", options: ["Basic bookkeeping", "College accounting problems", "Practical auditing experience"] },
+                { id: "co_11", domain: "fin_tech", text: "What is your understanding of blockchain smart contracts and decentralized finance (DeFi)?", options: ["Heard of crypto only", "Understand basic tokenomics", "Analyzed smart contract security and yield protocols"] },
+                { id: "co_12", domain: "digital_mkt", text: "How do you measure multi-touch attribution and customer lifetime value (LTV)?", options: ["Unfamiliar", "Know basic LTV formula", "Built predictive LTV and churn models"] }
+            ],
+            "Arts & Humanities": [
+                { id: "ar_1", domain: "ui_ux", text: "How proficient are you in Figma component libraries, auto-layout, and design systems?", options: ["Basic wireframes", "Used auto-layout & components", "Built scalable design systems"] },
+                { id: "ar_2", domain: "ui_ux", text: "Have you conducted moderated usability testing sessions and affinity mapping?", options: ["Never conducted", "Classroom project interview", "Conducted formal user testing and synthesized insights"] },
+                { id: "ar_3", domain: "content_media", text: "What is your experience writing search-optimized long-form content or video scripts?", options: ["Casual blogging", "College essays", "Published professional articles/scripts"] },
+                { id: "ar_4", domain: "content_media", text: "How familiar are you with digital audio/video editing software (Premiere Pro / Audition)?", options: ["Basic cuts", "Added transitions and audio sync", "Produced complete multi-camera multimedia projects"] },
+                { id: "ar_5", domain: "public_policy", text: "Have you drafted policy briefs or conducted legislative impact assessments?", options: ["Never written briefs", "Academic research paper", "Published policy memo or whitepaper"] },
+                { id: "ar_6", domain: "public_policy", text: "What is your familiarity with qualitative coding software (NVivo / ATLAS.ti) or thematic analysis?", options: ["Manual highligting", "Basic thematic grouping", "Rigorous qualitative research coding"] },
+                { id: "ar_7", domain: "psychology", text: "How well do you understand cognitive biases and behavioral economics principles?", options: ["Basic awareness", "Studied core theories", "Applied nudge theory in user studies"] },
+                { id: "ar_8", domain: "corporate_comm", text: "How do you manage crisis communication and press release distribution?", options: ["Theoretical knowledge", "Simulated college PR exercise", "Managed live corporate/club communications"] },
+                { id: "ar_9", domain: "fine_arts", text: "What is your proficiency with digital illustration and motion graphics (Illustrator / After Effects)?", options: ["Traditional sketching", "Basic vector art", "Advanced vector design and motion animations"] },
+                { id: "ar_10", domain: "ui_ux", text: "How do you ensure accessibility standards (WCAG 2.1) in your interface designs?", options: ["Unfamiliar with accessibility", "Check basic color contrast", "Full screen reader and keyboard navigation audits"] },
+                { id: "ar_11", domain: "content_media", text: "What is your editorial strategy for measuring content engagement and bounce rates?", options: ["Ignore analytics", "Check page views", "Analyzed Google Analytics audience retention curves"] }
+            ]
+        };
+
+        const masterCareerPool = {
+            "STEAM": [
+                {
+                    id: "ai_eng",
+                    title: "AI / Machine Learning Engineer",
+                    domainKeywords: ["ai_ml", "data_sci"],
+                    description: "Design, train, and deploy intelligent machine learning models and neural networks for real-world enterprise applications.",
+                    coreSkills: ["Python", "PyTorch / TensorFlow", "Data Structures", "Linear Algebra", "MLOps"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Advanced Python & Mathematical Foundations for ML", desc: "Master NumPy, Pandas, matrix operations, and probability distributions.", courseName: "Mathematics for Machine Learning Specialization (Coursera)", courseUrl: "https://www.coursera.org/specializations/mathematics-machine-learning" },
+                        { week: "Weeks 3-4", title: "Supervised & Unsupervised Learning Algorithms", desc: "Implement regression, decision trees, clustering, and SVMs from scratch.", courseName: "Machine Learning by Andrew Ng (Coursera)", courseUrl: "https://www.coursera.org/learn/machine-learning" },
+                        { week: "Weeks 5-6", title: "Deep Learning & Neural Networks Fundamentals", desc: "Build multi-layer perceptrons and convolutional neural networks using PyTorch.", courseName: "Deep Learning Specialization (Coursera)", courseUrl: "https://www.coursera.org/specializations/deep-learning" },
+                        { week: "Weeks 7-8", title: "NPTEL Applied Natural Language Processing", desc: "Explore tokenization, word embeddings, transformers, and LLM architectures.", courseName: "AI: Constraint Satisfaction & NLP (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Model Optimization, Evaluation & Hyperparameter Tuning", desc: "Address overfitting, regularization, ROC-AUC metrics, and cross-validation.", courseName: "Practical Deep Learning with PyTorch (edX / Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: End-to-End AI Web Inference", desc: "Deploy an intelligent prediction model using FastAPI and Docker for portfolio showcase.", courseName: "MLOps Engineering Specialization (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "full_stack",
+                    title: "Full-Stack Software Engineer",
+                    domainKeywords: ["full_stack"],
+                    description: "Develop robust, scalable web applications handling both high-performance backend services and responsive frontend user interfaces.",
+                    coreSkills: ["JavaScript/TypeScript", "React.js", "Node.js & Express", "SQL & MongoDB", "REST APIs"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Advanced JavaScript ES6+ & Asynchronous Programming", desc: "Master closures, promises, async/await, and modern JS design patterns.", courseName: "Advanced JavaScript Concepts (Udemy / FreeCodeCamp)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 3-4", title: "Frontend Engineering with React.js & Tailwind CSS", desc: "Build component-driven user interfaces with state management and routing.", courseName: "Meta Front-End Developer Professional Certificate (Coursera)", courseUrl: "https://www.coursera.org/professional-certificates/meta-front-end-developer" },
+                        { week: "Weeks 5-6", title: "Backend Node.js & Express RESTful API Design", desc: "Create secure server-side endpoints, middleware, and authentication flows.", courseName: "NodeJS - The Complete Guide (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 7-8", title: "Database Architecture: SQL and NoSQL Integration", desc: "Design relational schemas and manage non-relational document stores.", courseName: "Databases and SQL for Data Science with Python (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 9-10", title: "NPTEL Cloud Computing & Web Deployment", desc: "Understand cloud deployment models, containerization, and serverless hosting.", courseName: "Cloud Computing (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Production-Ready Full-Stack SaaS App", desc: "Build, test, and deploy a complete web application with user authentication and payment gateway.", courseName: "Full-Stack Web Development with React (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "cloud_sec",
+                    title: "Cloud & Cybersecurity Specialist",
+                    domainKeywords: ["cyber_sec"],
+                    description: "Secure cloud infrastructure, conduct vulnerability assessments, and implement robust defense-in-depth security policies.",
+                    coreSkills: ["AWS / Azure", "Network Protocols", "IAM & Access Control", "Ethical Hacking", "SIEM Tools"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Computer Networks & Operating System Security", desc: "Understand TCP/IP, DNS, firewall rules, and Linux kernel hardening.", courseName: "Introduction to Cybersecurity (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Cloud Infrastructure Fundamentals (AWS / Azure)", desc: "Configure virtual private clouds (VPCs), security groups, and load balancers.", courseName: "AWS Certified Solutions Architect (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Identity, Access Management (IAM) & Cryptography", desc: "Implement public key infrastructure (PKI), hashing, and multi-factor authentication.", courseName: "Cybersecurity Governance and Compliance (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Information Security & Risk Management", desc: "Analyze threat vectors, vulnerability testing frameworks, and incident response.", courseName: "Information Security - 2 (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Penetration Testing & Automated Vulnerability Scanning", desc: "Perform ethical hacking simulations using Burp Suite and Wireshark.", courseName: "Learn Ethical Hacking from Scratch (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Cloud Security Hardening Audit", desc: "Audit a multi-tier cloud deployment and produce an enterprise compliance report.", courseName: "Google Cybersecurity Professional Certificate (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "iot_robotics",
+                    title: "IoT & Embedded Systems Engineer",
+                    domainKeywords: ["core_eng"],
+                    description: "Build smart connected devices, sensor networks, and real-time automation hardware firmware.",
+                    coreSkills: ["C/C++", "RTOS", "Microcontrollers", "Sensor Interfacing", "MQTT Protocols"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Embedded C Programming & Memory Management", desc: "Master pointers, register configuration, and memory-mapped I/O.", courseName: "Embedded Systems Specialization (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Microcontroller Interfacing & Communication Protocols", desc: "Configure SPI, I2C, UART, and ADC peripherals.", courseName: "Microcontroller Programming (edX)", courseUrl: "https://www.edx.org/" },
+                        { week: "Weeks 5-6", title: "Real-Time Operating Systems (RTOS) & Task Scheduling", desc: "Manage semaphores, mutexes, and multi-threaded tasks.", courseName: "Real-Time Systems Engineering (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Introduction to IoT & Wireless Sensor Networks", desc: "Explore wireless sensor nodes, ZigBee, and gateway architectures.", courseName: "Introduction to Internet of Things (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Cloud IoT Dashboards & MQTT Telemetry", desc: "Stream sensor telemetry to AWS IoT Core and build web dashboards.", courseName: "Building IoT Solutions with Raspberry Pi (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Smart Autonomous IoT Node", desc: "Design and program a complete edge-computing sensor device.", courseName: "IoT Capstone Project (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "devops_engineer",
+                    title: "DevOps & Cloud SRE Engineer",
+                    domainKeywords: ["devops", "cyber_sec"],
+                    description: "Automate infrastructure deployment, monitor high-availability cloud clusters, and manage CI/CD pipelines.",
+                    coreSkills: ["Docker & Kubernetes", "Terraform", "CI/CD", "Linux Administration", "Prometheus & Grafana"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Linux System Administration & Bash Scripting", desc: "Master file permissions, process management, and shell automation scripts.", courseName: "Linux Mastery & Shell Scripting (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 3-4", title: "Container Orchestration with Docker & Kubernetes", desc: "Deploy pods, services, ingress controllers, and persistent volumes.", courseName: "Kubernetes Certified Administrator (CKA) (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Infrastructure as Code (IaC) with Terraform", desc: "Provision immutable cloud resources across AWS/Azure declaratively.", courseName: "Terraform Associate Certification Course (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Cloud Computing & Distributed Systems", desc: "Study consensus algorithms, load balancing, and fault tolerance.", courseName: "Cloud Computing (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Monitoring, Logging & SRE Observability", desc: "Configure Prometheus metrics collection and Grafana visualization alerts.", courseName: "Site Reliability Engineering (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Automated GitOps Pipeline", desc: "Deploy a production Kubernetes cluster managed via ArgoCD.", courseName: "DevOps Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "bigdata_engineer",
+                    title: "Big Data & Data Lakehouse Architect",
+                    domainKeywords: ["data_sci", "ai_ml"],
+                    description: "Design distributed data processing pipelines and large-scale data lakehouse architectures.",
+                    coreSkills: ["Apache Spark", "Hadoop / Hive", "Kafka", "Python/Scala", "Data Warehousing"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Distributed Computing Fundamentals & Hadoop Ecosystem", desc: "Understand HDFS, MapReduce, and cluster storage mechanics.", courseName: "Big Data Introduction (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Apache Spark & PySpark Data Engineering", desc: "Process massive datasets using Spark RDDs, DataFrames, and SQL.", courseName: "Spark and PySpark for Big Data (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Real-Time Streaming with Apache Kafka", desc: "Build real-time event streaming pipelines and consumer groups.", courseName: "Data Streaming with Apache Kafka (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Data Warehousing and Multidimensional Modeling", desc: "Explore star schemas, snowflake schemas, and OLAP cubes.", courseName: "Database and SQL / Data Warehousing (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Cloud Data Lakes & Delta Lake Architecture", desc: "Implement ACID transactions on object storage using Delta Lake.", courseName: "Modern Data Lakehouse Architectures (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: End-to-End ETL Streaming Pipeline", desc: "Build a real-time analytics pipeline processing millions of log events.", courseName: "Data Engineering Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "mobile_app_developer",
+                    title: "Cross-Platform Mobile App Developer",
+                    domainKeywords: ["full_stack"],
+                    description: "Build high-performance native iOS and Android mobile applications using Flutter or React Native.",
+                    coreSkills: ["Flutter / Dart", "React Native", "Mobile UI/UX", "REST APIs", "Local SQLite Storage"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Dart Programming & Flutter Widget Tree Fundamentals", desc: "Master stateless/stateful widgets and layout constraints.", courseName: "Flutter & Dart The Complete Guide (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 3-4", title: "State Management & Navigation in Mobile Apps", desc: "Implement Provider, Bloc, and named routing patterns.", courseName: "Advanced Flutter Development (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 5-6", title: "Native Device Features & REST API Integration", desc: "Integrate camera, GPS location, push notifications, and HTTP endpoints.", courseName: "Mobile App Integration (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Software Engineering & Mobile Architecture", desc: "Study software lifecycle models and mobile design patterns.", courseName: "Software Engineering (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Local Persistence & Firebase Backend Services", desc: "Use SQLite, Hive, and Firebase Firestore authentication.", courseName: "Firebase for Mobile Developers (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Published PlayStore/AppStore App", desc: "Build, test, and package a production-ready mobile application.", courseName: "Mobile App Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "blockchain_developer",
+                    title: "Blockchain & Web3 Smart Contract Engineer",
+                    domainKeywords: ["cyber_sec", "full_stack"],
+                    description: "Develop decentralized applications (dApps), write secure Solidity smart contracts, and interact with EVM blockchains.",
+                    coreSkills: ["Solidity", "Hardhat / Foundry", "Ethers.js / Web3.js", "Smart Contract Security", "IPFS"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Cryptographic Principles & Decentralized Networks", desc: "Understand public/private keys, hashing, consensus mechanisms, and Ethereum EVM.", courseName: "Blockchain Basics (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Smart Contract Development with Solidity", desc: "Write ERC-20 tokens, NFTs (ERC-721), and automated escrow contracts.", courseName: "Ethereum and Solidity Developer Bootcamp (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Frontend dApp Integration with Ethers.js & React", desc: "Connect browser wallets (MetaMask) to smart contracts.", courseName: "Web3 Development Masterclass (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Blockchain Architecture & Applications", desc: "Study permissioned ledgers, Hyperledger Fabric, and enterprise use cases.", courseName: "Blockchain and its Applications (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Smart Contract Auditing & Vulnerability Mitigations", desc: "Detect reentrancy attacks, integer overflow, and front-running.", courseName: "Smart Contract Security & Auditing (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Deployed DeFi Lending dApp", desc: "Deploy and verify a complete decentralized finance application on testnet.", courseName: "Web3 Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "game_developer",
+                    title: "Game Engine & Interactive Simulation Developer",
+                    domainKeywords: ["core_eng", "ai_ml"],
+                    description: "Develop immersive 3D video games and real-time interactive simulations using Unity or Unreal Engine.",
+                    coreSkills: ["C# / C++", "Unity Engine / Unreal Engine", "3D Mathematics", "Shader Programming", "Physics Engines"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "C# Scripting & Unity Engine Architecture", desc: "Master game object life cycles, transform matrices, and input handlers.", courseName: "Complete Unity Game Developer 3D (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 3-4", title: "3D Game Physics, Collision Detection & Lighting", desc: "Configure rigidbodies, raycasting, and baked lighting illumination.", courseName: "3D Graphics and Game Physics (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 5-6", title: "Artificial Intelligence for Non-Player Characters (NPCs)", desc: "Implement NavMesh pathfinding, behavior trees, and finite state machines.", courseName: "AI for Video Games (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Computer Graphics & Virtual Reality", desc: "Study rendering pipelines, ray tracing, and stereoscopic projection.", courseName: "Computer Graphics (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Multiplayer Networking & Photon/Netcode Integration", desc: "Synchronize player states and handle client-server RPC calls.", courseName: "Multiplayer Game Development (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Playable 3D Prototype Game", desc: "Publish a fully polished interactive game level for desktop/mobile.", courseName: "Game Dev Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "bioinformatics_analyst",
+                    title: "Bioinformatics & Computational Biologist",
+                    domainKeywords: ["data_sci", "ai_ml"],
+                    description: "Analyze genomic sequences, protein structures, and biological big data using computational algorithms.",
+                    coreSkills: ["Python / R", "Biopython", "Genomic Sequencing", "Statistical Genetics", "Biological Databases"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Molecular Biology Foundations & Sequence Alignment", desc: "Understand DNA/RNA structures and Needleman-Wunsch alignment algorithms.", courseName: "Bioinformatics Algorithms (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Python for Genomic Data Analysis", desc: "Process FASTA/FASTQ files and perform variant calling using Biopython.", courseName: "Python for Genomic Data Science (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 5-6", title: "RNA-Seq Gene Expression & Differential Analysis in R", desc: "Use Bioconductor packages to analyze transcriptomic microarray data.", courseName: "Genomic Data Science with R (Coursera / edX)", courseUrl: "https://www.edx.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Introduction to Proteomics & Structural Biology", desc: "Study protein folding, mass spectrometry, and structural databases.", courseName: "Proteomics (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Machine Learning in Drug Discovery & Biomarker Detection", desc: "Apply random forests and clustering to clinical biomarker panels.", courseName: "Machine Learning for Biology (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Genomic Variant Analysis Report", desc: "Analyze real clinical sequence reads and produce a biological insight paper.", courseName: "Bioinformatics Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                }
+            ],
+            "Commerce": [
+                {
+                    id: "fintech_analyst",
+                    title: "FinTech & Investment Analyst",
+                    domainKeywords: ["fin_tech", "entrepreneurship"],
+                    description: "Evaluate investment opportunities, build financial projection models, and analyze fintech market trends for institutional portfolios.",
+                    coreSkills: ["Financial Modeling", "Valuation Analysis", "Python for Finance", "Excel Dashboards", "Risk Assessment"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Corporate Finance & Financial Statement Analysis", desc: "Deconstruct income statements, cash flow statements, and balance sheet health.", courseName: "Financial Markets by Robert Shiller (Coursera)", courseUrl: "https://www.coursera.org/learn/financial-markets" },
+                        { week: "Weeks 3-4", title: "Advanced Excel & Financial Modeling Techniques", desc: "Build dynamic DCF models, sensitivity tables, and scenario analysis calculators.", courseName: "The Complete Financial Analyst Training (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Python for Financial Analysis & Algorithmic Trading", desc: "Fetch stock market data, calculate portfolio returns, and backtest trading strategies.", courseName: "Python and Statistics for Financial Analysis (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Financial Institutions and Markets", desc: "Understand banking regulations, capital markets, and monetary policy impacts.", courseName: "Financial Institutions and Markets (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Fintech Innovations: Blockchain, Robo-Advisors & UPI", desc: "Explore digital payment ecosystems, peer-to-peer lending, and decentralized finance.", courseName: "Fintech Foundations and Overview (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Investment Pitchbook & Valuation Report", desc: "Create a comprehensive equity research report and financial model for an emerging startup.", courseName: "Investment Management Specialization (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "biz_analyst",
+                    title: "Business & Enterprise Data Analyst",
+                    domainKeywords: ["biz_analytics", "supply_chain"],
+                    description: "Translate complex business datasets into actionable strategic insights and visual dashboards for corporate leadership.",
+                    coreSkills: ["SQL", "Tableau / PowerBI", "Statistical Analysis", "Business Strategy", "Stakeholder Communication"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Foundations of Business Intelligence & Data Gathering", desc: "Learn data cleansing, data warehousing concepts, and relational querying.", courseName: "Google Business Intelligence Professional Certificate (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Data Visualization with Tableau & Power BI", desc: "Design interactive executive dashboards, KPI scorecards, and visual trends.", courseName: "Microsoft Power BI Desktop for Business Intelligence (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Advanced SQL for Business Analysts", desc: "Write complex window functions, CTEs, and cohort retention queries.", courseName: "Managing Big Data with MySQL (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Business Analytics & Marketing Research", desc: "Explore customer segmentation, churn prediction, and market basket analysis.", courseName: "Business Analytics (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "A/B Testing & Experimental Design for Business Growth", desc: "Measure conversion rates, statistical significance, and campaign ROI.", courseName: "Marketing Analytics (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Enterprise Optimization Dashboard", desc: "Deliver a complete data-backed recommendation deck addressing operational bottlenecks.", courseName: "Business Analysis & Process Management (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "digital_mkt_strat",
+                    title: "Digital Marketing & Brand Strategist",
+                    domainKeywords: ["digital_mkt"],
+                    description: "Plan and execute multichannel growth marketing campaigns, SEO strategies, and performance-driven customer acquisition funnels.",
+                    coreSkills: ["SEO / SEM", "Performance Marketing", "Content Strategy", "Social Media Analytics", "Customer Journey Mapping"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Fundamentals of Digital Marketing & Consumer Behavior", desc: "Understand digital funnels, target audience persona mapping, and brand positioning.", courseName: "Digital Marketing Specialization (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Search Engine Optimization (SEO) & Content Marketing", desc: "Master technical SEO, keyword research, and high-converting copywriting.", courseName: "The Complete Digital Marketing Course (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Paid Acquisition: Google Ads, Meta Ads & LinkedIn Ads", desc: "Manage ad spend budgets, ROAS optimization, and retargeting campaigns.", courseName: "Meta Social Media Marketing Professional Certificate (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Marketing Management & Consumer Insights", desc: "Study brand equity, pricing strategies, and omnichannel retail dynamics.", courseName: "Marketing Management (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Marketing Analytics & Attribution Modeling", desc: "Track web traffic using Google Analytics 4 and evaluate multi-touch attribution.", courseName: "Google Analytics Certification Course (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: 360-Degree Growth Campaign", desc: "Design and budget a full digital launch campaign for a new consumer product.", courseName: "Digital Brand Management (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "supply_chain_manager",
+                    title: "Global Supply Chain & Logistics Manager",
+                    domainKeywords: ["supply_chain", "biz_analytics"],
+                    description: "Optimize global warehouse inventories, freight forwarding networks, and procurement operations.",
+                    coreSkills: ["ERP Systems (SAP/Oracle)", "Inventory Control", "Procurement Strategy", "Freight Optimization", "Risk Management"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Supply Chain Principles & Network Design", desc: "Understand demand forecasting, lead times, and bullwhip effects.", courseName: "Supply Chain Management Specialization (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Procurement, Vendor Negotiation & Sourcing", desc: "Master supplier evaluation matrices and contract negotiations.", courseName: "Supply Chain Logistics (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 5-6", title: "Warehouse Operations & ERP Systems (SAP Overview)", desc: "Track stock movements, SKU slotting, and warehouse management systems.", courseName: "Enterprise Resource Planning (edX)", courseUrl: "https://www.edx.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Operations and Supply Chain Management", desc: "Study facility location models, EOQ formulas, and queueing theory.", courseName: "Operations Supply Chain Management (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Global Trade Compliance & Risk Mitigation", desc: "Analyze geopolitical trade disruptions and contingency route planning.", courseName: "Global Supply Chain Management (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Supply Chain Cost Reduction Plan", desc: "Redesign a manufacturing supply network to achieve 15% freight savings.", courseName: "Supply Chain Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "startup_founder",
+                    title: "Venture Capital & Startup Growth Strategist",
+                    domainKeywords: ["entrepreneurship", "fin_tech"],
+                    description: "Evaluate startup deal flow, perform due diligence, and advise early-stage portfolio companies on growth.",
+                    coreSkills: ["Venture Deal Flow", "Term Sheet Analysis", "Startup Growth Metrics", "Fundraising", "Go-To-Market"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Venture Capital Ecosystem & Deal Sourcing", desc: "Understand seed funding rounds, valuation caps, and SAFE notes.", courseName: "Venture Capital Financing (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Startup Financial Due Diligence & Unit Economics", desc: "Analyze CAC, LTV, churn, burn rate, and gross margins.", courseName: "Startup Finance & Valuation (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Growth Hacking & Product-Market Fit Iteration", desc: "Run systematic customer feedback loops and viral coefficient experiments.", courseName: "Entrepreneurship 101 (edX)", courseUrl: "https://www.edx.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Entrepreneurship and Innovation", desc: "Study innovation diffusion theory, patent laws, and venture scaling.", courseName: "Entrepreneurship (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Investor Relations & Term Sheet Negotiation", desc: "Draft investor update memos and negotiate liquidation preferences.", courseName: "Negotiation Skills (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Investment Memo & Portfolio Strategy", desc: "Prepare a rigorous investment thesis memo for an emerging technology startup.", courseName: "VC & Private Equity Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "tax_consultant",
+                    title: "Corporate Tax & Financial Compliance Consultant",
+                    domainKeywords: ["fin_accounting", "fin_tech"],
+                    description: "Advise corporations on Goods and Services Tax (GST), corporate income tax, and regulatory compliance.",
+                    coreSkills: ["GST & Indirect Tax", "Corporate Tax Laws", "Auditing Standards", "Financial Compliance", "Tally / ERP"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Corporate Tax Law & Direct Taxation Principles", desc: "Understand income tax slabs, deductions, and corporate tax liabilities.", courseName: "Corporate Taxation (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "GST Regulatory Framework & Input Tax Credit (ITC)", desc: "Master GST filings, e-way bills, and interstate supply rules.", courseName: "GST Practical Training (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Auditing Standards & Internal Control Reviews", desc: "Perform statutory audit checks, voucher verification, and risk assessment.", courseName: "Auditing and Legal Compliance (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Legal Compliance in Business", desc: "Study Company Act provisions, corporate governance, and board duties.", courseName: "Business Law (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "International Taxation & Transfer Pricing", desc: "Analyze double taxation avoidance agreements (DTAA) and transfer pricing.", courseName: "International Taxation (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Comprehensive Corporate Tax Audit", desc: "Draft a corporate tax compliance and optimization report for a manufacturing firm.", courseName: "Accounting Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "hr_manager",
+                    title: "Human Resources & Talent Acquisition Strategist",
+                    domainKeywords: ["entrepreneurship", "corporate_comm"],
+                    description: "Manage organizational talent pipelines, employee engagement programs, and compensation structures.",
+                    coreSkills: ["Talent Sourcing", "Performance Management", "Labour Laws", "Organizational Psychology", "HR Analytics"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Strategic Human Resource Management", desc: "Understand workforce planning, job analysis, and competency frameworks.", courseName: "Human Resource Management (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Talent Acquisition & Employer Branding", desc: "Master applicant tracking systems (ATS), behavioral interviewing, and onboarding.", courseName: "Recruitment and Talent Acquisition (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Compensation, Benefits & Performance Appraisals", desc: "Design balanced scorecards, salary benchmarking, and incentive schemes.", courseName: "Compensation Management (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Human Resource Development", desc: "Study training need analysis, leadership pipelines, and career pathing.", courseName: "Human Resource Development (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "HR Analytics: Measuring Attrition & Employee Engagement", desc: "Use data metrics to predict employee turnover and engagement scores.", courseName: "People Analytics (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Enterprise HR Restructuring Plan", desc: "Develop an organizational restructuring and talent retention strategy.", courseName: "HR Management Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "investment_banker",
+                    title: "Mergers & Acquisitions (M&A) Analyst",
+                    domainKeywords: ["fin_tech", "fin_accounting"],
+                    description: "Assist institutional clients in evaluating corporate mergers, acquisitions, and capital raising transactions.",
+                    coreSkills: ["M&A Valuation", "LBO Modeling", "Pitchbook Creation", "Due Diligence", "Financial Markets"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Investment Banking Overview & Capital Markets", desc: "Understand equity and debt capital raising, IPO underwriting processes.", courseName: "Investment Banking Foundations (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Mergers & Acquisitions (M&A) Deal Mechanics", desc: "Analyze accretion/dilution models, synergies, and deal structuring.", courseName: "M&A Modeling Course (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Leveraged Buyout (LBO) Modeling Techniques", desc: "Build debt schedule waterfalls and private equity return projections.", courseName: "Advanced Corporate Finance (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Financial Statement Analysis and Security Valuation", desc: "Study valuation multiples, dividend discount models, and cost of capital.", courseName: "Security Analysis and Portfolio Management (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Pitchbook Presentation & Confidential Information Memorandums", desc: "Create professional transaction teasers and CIM documents.", courseName: "Financial Presentation Design (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: M&A Valuation & Advisory Pitch Deck", desc: "Build a complete acquisition valuation model and advisory presentation.", courseName: "Investment Banking Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "retail_category_manager",
+                    title: "Retail & E-Commerce Category Manager",
+                    domainKeywords: ["supply_chain", "digital_mkt"],
+                    description: "Manage product assortment, pricing strategies, vendor negotiations, and merchandising for retail platforms.",
+                    coreSkills: ["Category Strategy", "Retail Pricing", "Vendor Management", "Sell-Through Analysis", "Merchandising"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Retail Management & Omni-Channel Strategy", desc: "Understand retail formats, shopper psychology, and store layouts.", courseName: "Retail Management (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Category Planning & Assortment Optimization", desc: "Analyze gross margin return on investment (GMROI) and space allocation.", courseName: "Category Management (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "E-Commerce Marketplace Operations (Amazon/Flipkart)", desc: "Optimize buy-box placement, sponsored product ads, and inventory turnover.", courseName: "E-Commerce Strategies (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Marketing Research and Analysis", desc: "Study consumer panel data, conjoint analysis, and brand loyalty tracking.", courseName: "Marketing Research (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Promotional Pricing & Markdown Optimization", desc: "Plan promotional calendar campaigns and clearance margin recovery.", courseName: "Pricing Strategy (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: E-Commerce Product Category Launch", desc: "Build a 6-month product catalog launch and pricing strategy.", courseName: "Retail Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "wealth_manager",
+                    title: "Private Wealth & Portfolio Advisor",
+                    domainKeywords: ["fin_tech", "fin_accounting"],
+                    description: "Provide tailored financial planning, asset allocation, and estate planning services to high-net-worth clients.",
+                    coreSkills: ["Asset Allocation", "Mutual Funds & Equities", "Retirement Planning", "Tax Planning", "Client Relationship"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Personal Financial Planning & Wealth Management", desc: "Understand asset classes, risk profiling, and life-cycle financial goals.", courseName: "Personal and Family Financial Planning (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Mutual Fund Portfolio Construction & Modern Portfolio Theory", desc: "Calculate Sharpe ratios, alpha, beta, and efficient frontiers.", courseName: "Portfolio Management (edX)", courseUrl: "https://www.edx.org/" },
+                        { week: "Weeks 5-6", title: "Insurance, Retirement & Estate Planning", desc: "Evaluate term insurance, annuities, wills, and trust structures.", courseName: "Risk Management and Insurance (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Financial Management", desc: "Study capital budgeting, working capital, and dividend decisions.", courseName: "Financial Management (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Client Advisory & Behavioral Finance", desc: "Identify client behavioral biases during market drawdowns.", courseName: "Behavioral Finance (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Comprehensive Wealth Advisory Plan", desc: "Draft a personalized 10-year wealth allocation and retirement plan.", courseName: "Wealth Management Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                }
+            ],
+            "Arts & Humanities": [
+                {
+                    id: "ui_ux_designer",
+                    title: "UI/UX Product Designer",
+                    domainKeywords: ["ui_ux", "psychology"],
+                    description: "Research user needs, create intuitive wireframes, and design delightful, accessible digital interfaces for web and mobile apps.",
+                    coreSkills: ["Figma / Adobe XD", "User Research", "Wireframing", "Interaction Design", "Usability Testing"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Foundations of User Experience Design", desc: "Learn empathy mapping, user interviews, pain point identification, and personas.", courseName: "Google UX Design Professional Certificate (Coursera)", courseUrl: "https://www.coursera.org/professional-certificates/google-ux-design" },
+                        { week: "Weeks 3-4", title: "Wireframing & Low-Fidelity Prototyping in Figma", desc: "Translate user research findings into rapid paper sketches and digital wireframes.", courseName: "Complete Figma UI/UX Masterclass (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Design Systems, Typography & High-Fidelity UI", desc: "Build scalable design systems adhering to accessibility (WCAG) standards.", courseName: "UI/UX Design Specialization (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Human-Computer Interaction (HCI)", desc: "Study cognitive psychology principles, user attention spans, and ergonomic interaction.", courseName: "Human Computer Interaction (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Usability Testing, Iteration & Design Handoff", desc: "Conduct moderated usability testing sessions and prepare developer asset handoffs.", courseName: "UX Research - Scale Your Product (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: End-to-End Mobile App Case Study", desc: "Design a complete problem-solving mobile application with interactive prototype for portfolio.", courseName: "UX Portfolio Creation (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "content_strategist",
+                    title: "Digital Media & Content Strategist",
+                    domainKeywords: ["content_media", "corporate_comm"],
+                    description: "Craft editorial calendars, produce compelling multi-format content, and manage brand storytelling across digital channels.",
+                    coreSkills: ["Editorial Strategy", "Copywriting", "SEO Writing", "Video Scripting", "Audience Analytics"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "The Art of Digital Storytelling & Brand Voice", desc: "Develop tone of mind, narrative arcs, and compelling editorial positioning.", courseName: "The Strategy of Content Marketing (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "SEO Copywriting & Long-Form Article Creation", desc: "Write search-optimized content that ranks high and retains reader attention.", courseName: "Content Marketing Masterclass (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Multimedia Storytelling: Video, Podcasts & Social Snippets", desc: "Script engaging short-form video content and podcast episodes.", courseName: "Digital Media Production (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Communication Skills & Professional Writing", desc: "Master professional correspondence, persuasion techniques, and public speaking.", courseName: "Enhancing Soft Skills and Personality (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Content Distribution Channels & Email Marketing Automation", desc: "Manage newsletters, subscriber segmentation, and retention campaigns.", courseName: "Email Marketing Strategy (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Brand Content Hub & Publication Launch", desc: "Publish an independent digital publication with a 3-month strategic content calendar.", courseName: "Viral Marketing and How to Craft Contagious Content (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "public_policy",
+                    title: "Public Policy & Social Research Analyst",
+                    domainKeywords: ["public_policy"],
+                    description: "Evaluate public policies, conduct stakeholder interviews, and draft policy briefs for governance and non-profit initiatives.",
+                    coreSkills: ["Policy Evaluation", "Qualitative Research", "Report Drafting", "Data Governance", "Stakeholder Engagement"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Introduction to Public Policy Analysis & Governance", desc: "Understand policy lifecycles, legislative frameworks, and administrative systems.", courseName: "Public Policy (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Qualitative & Quantitative Research Methods for Social Impact", desc: "Design survey questionnaires, conduct focus groups, and analyze social metrics.", courseName: "Social Research Methods (edX)", courseUrl: "https://www.edx.org/" },
+                        { week: "Weeks 5-6", title: "Economic Policy, Welfare Schemes & Impact Evaluation", desc: "Examine welfare distribution models and program evaluation methodologies.", courseName: "Economics of Public Policy (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Ethics, Governance and Public Service", desc: "Explore ethical dilemmas in public administration and corporate social responsibility.", courseName: "Ethics in Public Domain (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Drafting Policy Memorandums & Executive Briefs", desc: "Synthesize complex socio-economic data into concise, persuasive policy memos.", courseName: "Writing Winning Policy Briefs (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Comprehensive Policy Whitepaper", desc: "Publish a rigorous research paper addressing a pressing urban or rural policy challenge in Maharashtra.", courseName: "Global Diplomacy and Public Policy (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "ux_researcher",
+                    title: "UX Researcher & Consumer Insights Specialist",
+                    domainKeywords: ["psychology", "ui_ux"],
+                    description: "Conduct qualitative user interviews, diary studies, and ergonomic behavioral research to inform product roadmaps.",
+                    coreSkills: ["User Interviews", "Survey Design", "Ethnographic Research", "Data Synthesis", "Persona Mapping"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Foundations of User Research & Psychology", desc: "Understand human cognitive psychology and qualitative observation methods.", courseName: "User Research Methods (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Designing Surveys & Conducting Contextual Inquiries", desc: "Draft unbiased survey questions and execute contextual field interviews.", courseName: "Conducting Usability Research (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Data Synthesis, Affinity Diagramming & Persona Creation", desc: "Analyze qualitative transcripts and map behavioral user journeys.", courseName: "UX Research - Scale Your Product (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Applied Psychology & Human Behavior", desc: "Study motivation theories, emotional intelligence, and cognitive biases.", courseName: "Applied Psychology (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Card Sorting & Information Architecture Testing", desc: "Structure menu navigation and hierarchical content labeling.", courseName: "Information Architecture (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Comprehensive UX Research Whitepaper", desc: "Deliver an exhaustive research study on user behavior for a digital product.", courseName: "UX Research Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "pr_specialist",
+                    title: "Corporate Communications & PR Specialist",
+                    domainKeywords: ["corporate_comm", "content_media"],
+                    description: "Manage media relations, crisis communication, corporate branding, and stakeholder messaging.",
+                    coreSkills: ["Media Relations", "Crisis Management", "Press Release Drafting", "Brand Reputation", "Speechwriting"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Corporate Communication Foundations & Media Relations", desc: "Build journalist networks, media kits, and press release distribution lists.", courseName: "Corporate Communications (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Crisis Communication & Reputation Management", desc: "Simulate crisis response scenarios and craft stakeholder holding statements.", courseName: "Crisis Management & PR (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Speechwriting, Investor Relations & Executive Positioning", desc: "Draft keynote speeches, annual report messages, and executive LinkedIn posts.", courseName: "Effective Business Writing (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Soft Skills & Professional Communication", desc: "Study interpersonal negotiation, conflict resolution, and etiquette.", courseName: "Enhancing Soft Skills and Personality (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Digital PR & Influencer Outreach Campaigns", desc: "Measure share of voice (SOV) and digital media sentiment metrics.", courseName: "Digital PR Strategies (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Comprehensive PR Campaign Blueprint", desc: "Design a 6-month corporate reputation and media outreach campaign.", courseName: "PR Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "multimedia_animator",
+                    title: "Visual Arts, Animation & Motion Designer",
+                    domainKeywords: ["fine_arts", "ui_ux"],
+                    description: "Create compelling motion graphics, 2D/3D character animations, and visual storytelling assets.",
+                    coreSkills: ["Adobe After Effects", "Blender / Maya", "Motion Graphics", "Storyboard Illustration", "Color Grading"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Principles of Animation & Storyboard Sketching", desc: "Master squash and stretch, timing, anticipation, and visual composition.", courseName: "The Art of Animation (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Motion Graphics & Compositing in After Effects", desc: "Create kinetic typography, shape layer animations, and visual effects.", courseName: "After Effects Motion Graphics Masterclass (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "3D Modeling and Texturing in Blender", desc: "Model hard surface assets, apply shaders, and render lighting scenes.", courseName: "Blender 3D Modeling (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Animation and Visual Effects", desc: "Study rendering algorithms, rigging, and kinematics.", courseName: "Animation (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Video Editing & Sound Design Integration", desc: "Synchronize audio sound effects with visual animation beats.", courseName: "Video Production and Editing (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Animated Showreel Production", desc: "Produce and publish a professional 60-second motion design portfolio reel.", courseName: "Animation Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "social_sector_manager",
+                    title: "NGO Director & Social Impact Project Manager",
+                    domainKeywords: ["public_policy", "corporate_comm"],
+                    description: "Design, fundraise, and manage community development and social welfare programs.",
+                    coreSkills: ["Grant Writing", "Impact Measurement", "Community Mobilization", "CSR Fundraising", "Project Budgeting"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Introduction to Non-Profit Management & Social Enterprise", desc: "Understand social sector ecosystems, Theory of Change frameworks.", courseName: "Social Enterprise (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Grant Proposal Writing & CSR Fund Raising", desc: "Draft winning philanthropic grant proposals and corporate CSR pitches.", courseName: "Grant Writing for Non-Profits (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Monitoring and Evaluation (M&E) of Social Programs", desc: "Design logical frameworks (LogFrames) and outcome indicators.", courseName: "Impact Evaluation (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Corporate Social Responsibility", desc: "Study Schedule VII CSR mandates, ethical frameworks, and sustainability.", courseName: "Corporate Social Responsibility (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Community Stakeholder Engagement & Advocacy", desc: "Mobilize grassroots volunteer networks and public advocacy campaigns.", courseName: "Community Organizing (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Social Impact Project Proposal", desc: "Build a complete 1-year community welfare project proposal with budget.", courseName: "Social Sector Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "journalist_editor",
+                    title: "Investigative Journalist & Senior Editor",
+                    domainKeywords: ["content_media", "public_policy"],
+                    description: "Uncover investigative stories, conduct archival research, edit editorial columns, and report news.",
+                    coreSkills: ["Investigative Reporting", "Fact-Checking", "Editorial Writing", "Media Law", "Interviewing"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Journalistic Ethics, Truth-Seeking & Fact-Checking", desc: "Master verification protocols, source confidentiality, and media ethics.", courseName: "Journalism and Media (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Investigative Research & Freedom of Information", desc: "File RTI (Right to Information) requests and mine public government records.", courseName: "Investigative Journalism Masterclass (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Long-Form Feature Writing & Editorial Column Editing", desc: "Craft compelling narrative feature stories and edit copy for clarity.", courseName: "Creative Writing and Editing (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Media Laws and Ethics", desc: "Study defamation laws, copyright acts, and freedom of speech jurisprudence.", courseName: "Media Laws (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Digital Journalism & Podcasting Production", desc: "Produce audio documentary podcasts and digital news video packages.", courseName: "Digital Journalism Specialization (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Published Investigative Feature Series", desc: "Publish an in-depth three-part investigative journalism series.", courseName: "Journalism Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "cultural_historian",
+                    title: "Museum Curator & Cultural Heritage Archivist",
+                    domainKeywords: ["public_policy", "fine_arts"],
+                    description: "Preserve historical artifacts, curate museum exhibitions, and manage cultural archival documentation.",
+                    coreSkills: ["Archival Preservation", "Exhibition Curation", "Historical Research", "Artifact Cataloging", "Public Education"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "Introduction to Museum Studies & Heritage Preservation", desc: "Understand conservation ethics, artifact climate control, and cataloging.", courseName: "Museum Studies (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Exhibition Curation & Public Museum Programming", desc: "Design educational gallery layouts and visitor engagement tours.", courseName: "Exhibition Design (edX)", courseUrl: "https://www.edx.org/" },
+                        { week: "Weeks 5-6", title: "Digital Archiving & Metadata Standards", desc: "Digitize historical manuscripts and build searchable digital museum archives.", courseName: "Digital Heritage Preservation (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Heritage Tourism and Cultural Management", desc: "Study cultural tourism economics, site management, and policies.", courseName: "Heritage Management (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Grant Writing and Cultural Endowment Fundraising", desc: "Secure grants for heritage preservation projects and public exhibitions.", courseName: "Non-Profit Fundraising (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Virtual Museum Exhibition Catalog", desc: "Curate and publish a complete digital museum exhibition website.", courseName: "Archival Studies Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                },
+                {
+                    id: "literary_agent",
+                    title: "Literary Agent & Publishing Consultant",
+                    domainKeywords: ["content_media", "corporate_comm"],
+                    description: "Represent authors, negotiate book publishing contracts, and manage literary manuscript syndication.",
+                    coreSkills: ["Manuscript Evaluation", "Contract Negotiation", "Publishing Industry Trends", "Author Management", "Rights Licensing"],
+                    roadmap: [
+                        { week: "Weeks 1-2", title: "The Book Publishing Industry & Editorial Scouting", desc: "Understand trade publishing houses, literary genres, and manuscript pitching.", courseName: "Book Publishing (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 3-4", title: "Manuscript Evaluation & Developmental Editing", desc: "Assess plot arcs, character development, and commercial viability.", courseName: "Editing and Publishing (Udemy)", courseUrl: "https://www.udemy.com/" },
+                        { week: "Weeks 5-6", title: "Publishing Contracts, Copyright & Subsidiary Rights", desc: "Negotiate royalty percentages, foreign translation rights, and option clauses.", courseName: "Intellectual Property Law (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 7-8", title: "NPTEL Professional Writing and Editing", desc: "Study advanced grammar, styling guidelines, and publication production.", courseName: "Professional Writing (NPTEL)", courseUrl: "https://onlinecourses.nptel.ac.in/" },
+                        { week: "Weeks 9-10", title: "Author Branding and Publicity Campaigns", desc: "Coordinate book launch tours, reviews, and bestseller promotional campaigns.", courseName: "Book Marketing Strategy (Coursera)", courseUrl: "https://www.coursera.org/" },
+                        { week: "Weeks 11-12", title: "Capstone Project: Literary Pitch Package & Representation Deal", desc: "Draft a comprehensive pitch package and representation agreement for a new manuscript.", courseName: "Publishing Capstone (Coursera)", courseUrl: "https://www.coursera.org/" }
+                    ]
+                }
+            ]
+        };
+
+        // --- Real-Time Cross-Tab Sync via Storage Event ---
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'pathfinder_global_submissions' || e.key === 'pathfinder_user_session') {
+                if (!document.getElementById('view-mentor-dashboard').classList.contains('hidden')) {
+                    renderMentorSubmissions();
+                }
+                const savedSession = localStorage.getItem('pathfinder_user_session');
+                if (savedSession) {
+                    const data = JSON.parse(savedSession);
+                    mentorStatus = data.mentorStatus || 'not_submitted';
+                    isPathwayLocked = data.isPathwayLocked || false;
+                    if (!document.getElementById('view-roadmap').classList.contains('hidden')) {
+                        updateMentorBadgeUI();
+                    }
+                }
+            }
+        });
+
+        // --- Persistent Storage & Initialization on Load ---
+        window.onload = function() {
+            const savedSession = localStorage.getItem('pathfinder_user_session');
+            if (savedSession) {
+                const data = JSON.parse(savedSession);
+                currentUser = data.currentUser;
+                surveyData = data.surveyData;
+                selectedCareer = data.selectedCareer;
+                mentorStatus = data.mentorStatus || 'not_submitted';
+                isPathwayLocked = data.isPathwayLocked || false;
+
+                if (currentUser.phone) {
+                    document.getElementById('nav-user-info').classList.remove('hidden');
+                    document.getElementById('nav-user-info').classList.add('flex');
+                    document.getElementById('nav-display-name').innerText = `${currentUser.name} (${currentUser.stream})`;
+                    document.getElementById('mentor-college-text').innerText = currentUser.college;
+                    document.getElementById('view-auth').classList.add('hidden');
+
+                    if (surveyData.passions.length > 0) {
+                        generateRankings();
+                        if (selectedCareer) {
+                            openRoadmap(selectedCareer.id, true);
+                        } else {
+                            document.getElementById('view-dashboard').classList.remove('hidden');
+                        }
+                    } else {
+                        document.getElementById('view-survey').classList.remove('hidden');
+                        initSurveyForm();
+                    }
+                }
+            }
+        };
+
+        // --- Role & Tab Switcher ---
+        function switchRoleTab(role) {
+            const tabStudent = document.getElementById('tab-student');
+            const tabMentor = document.getElementById('tab-mentor');
+            const formStudent = document.getElementById('form-student');
+            const formMentor = document.getElementById('form-mentor');
+
+            if (role === 'student') {
+                tabStudent.className = "py-2 text-xs font-bold rounded-lg bg-white text-indigo-900 shadow-sm transition";
+                tabMentor.className = "py-2 text-xs font-bold rounded-lg text-slate-600 transition";
+                formStudent.classList.remove('hidden');
+                formMentor.classList.add('hidden');
+            } else {
+                tabMentor.className = "py-2 text-xs font-bold rounded-lg bg-indigo-900 text-white shadow-sm transition";
+                tabStudent.className = "py-2 text-xs font-bold rounded-lg text-slate-600 transition";
+                formMentor.classList.remove('hidden');
+                formStudent.classList.add('hidden');
+            }
+        }
+
+        // --- Authentication Functions ---
+        function requestOTP() {
+            const name = document.getElementById('login-name').value.trim();
+            const phone = document.getElementById('login-phone').value.trim();
+            const college = document.getElementById('login-college').value;
+            const stream = document.getElementById('login-stream').value;
+
+            if (!name || phone.length !== 10 || !college || !stream) {
+                alert('Please fill in all fields correctly (10-digit mobile number required).');
+                return;
+            }
+
+            const existingData = localStorage.getItem('pathfinder_user_' + phone);
+            if (existingData) {
+                const parsed = JSON.parse(existingData);
+                currentUser = parsed.currentUser;
+                surveyData = parsed.surveyData;
+                selectedCareer = parsed.selectedCareer;
+                mentorStatus = parsed.mentorStatus || 'not_submitted';
+                isPathwayLocked = parsed.isPathwayLocked || false;
+            } else {
+                currentUser = { name, phone, college, stream };
+                surveyData = { passions: [], skillLevel: '', assessmentAnswers: {}, completedMilestones: [] };
+                selectedCareer = null;
+                mentorStatus = 'not_submitted';
+                isPathwayLocked = false;
+            }
+
+            document.getElementById('display-phone-num').innerText = `+91 ${phone}`;
+            document.getElementById('auth-step-1').classList.add('hidden');
+            document.getElementById('auth-step-2').classList.remove('hidden');
+        }
+
+        function verifyOTP() {
+            const otp = document.getElementById('login-otp').value.trim();
+            if (otp.length !== 4) {
+                alert('Please enter a valid 4-digit OTP code.');
+                return;
+            }
+
+            document.getElementById('nav-user-info').classList.remove('hidden');
+            document.getElementById('nav-user-info').classList.add('flex');
+            document.getElementById('nav-display-name').innerText = `${currentUser.name} (${currentUser.stream})`;
+            document.getElementById('mentor-college-text').innerText = currentUser.college;
+
+            document.getElementById('view-auth').classList.add('hidden');
+            saveSessionToStorage();
+
+            if (surveyData.passions.length > 0) {
+                generateRankings();
+                if (selectedCareer) {
+                    openRoadmap(selectedCareer.id, true);
+                } else {
+                    document.getElementById('view-dashboard').classList.remove('hidden');
+                }
+            } else {
+                document.getElementById('view-survey').classList.remove('hidden');
+                initSurveyForm();
+            }
+        }
+
+        function loginMentor() {
+            const email = document.getElementById('mentor-email').value.trim();
+            const pass = document.getElementById('mentor-pass').value.trim();
+
+            if (!email || !pass) {
+                alert('Please enter faculty credentials.');
+                return;
+            }
+
+            document.getElementById('nav-user-info').classList.remove('hidden');
+            document.getElementById('nav-user-info').classList.add('flex');
+            document.getElementById('nav-display-name').innerText = `Dr. Rajesh Sharma (Faculty Mentor)`;
+
+            document.getElementById('view-auth').classList.add('hidden');
+            document.getElementById('view-mentor-dashboard').classList.remove('hidden');
+            renderMentorSubmissions();
+        }
+
+        function resetAuth() {
+            document.getElementById('auth-step-2').classList.add('hidden');
+            document.getElementById('auth-step-1').classList.remove('hidden');
+            document.getElementById('login-otp').value = '';
+        }
+
+        function logout() {
+            localStorage.removeItem('pathfinder_user_session');
+            currentUser = { name: '', phone: '', college: '', stream: '' };
+            surveyData = { passions: [], skillLevel: '', assessmentAnswers: {}, completedMilestones: [] };
+            selectedCareer = null;
+            mentorStatus = 'not_submitted';
+            isPathwayLocked = false;
+
+            document.getElementById('nav-user-info').classList.add('hidden');
+            document.getElementById('nav-user-info').classList.remove('flex');
+
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-roadmap').classList.add('hidden');
+            document.getElementById('view-survey').classList.add('hidden');
+            document.getElementById('view-mentor-dashboard').classList.add('hidden');
+            document.getElementById('view-auth').classList.remove('hidden');
+            resetAuth();
+            document.getElementById('login-name').value = '';
+            document.getElementById('login-phone').value = '';
+            document.getElementById('login-college').value = '';
+            document.getElementById('login-stream').value = '';
+        }
+
+        function saveSessionToStorage() {
+            const sessionObj = { currentUser, surveyData, selectedCareer, mentorStatus, isPathwayLocked };
+            localStorage.setItem('pathfinder_user_session', JSON.stringify(sessionObj));
+            if (currentUser.phone) {
+                localStorage.setItem('pathfinder_user_' + currentUser.phone, JSON.stringify(sessionObj));
+
+                if (mentorStatus !== 'not_submitted') {
+                    let submissions = JSON.parse(localStorage.getItem('pathfinder_global_submissions') || '[]');
+                    const existingIdx = submissions.findIndex(s => s.phone === currentUser.phone);
+                    const subData = {
+                        name: currentUser.name,
+                        phone: currentUser.phone,
+                        college: currentUser.college,
+                        stream: currentUser.stream,
+                        careerTitle: selectedCareer ? selectedCareer.title : 'Not Selected',
+                        passions: surveyData.passions,
+                        skillLevel: surveyData.skillLevel,
+                        status: mentorStatus,
+                        timestamp: new Date().toLocaleString()
+                    };
+
+                    if (existingIdx >= 0) {
+                        submissions[existingIdx] = subData;
+                    } else {
+                        submissions.push(subData);
+                    }
+                    localStorage.setItem('pathfinder_global_submissions', JSON.stringify(submissions));
+                }
+            }
+        }
+
+        // --- Survey Initialization & Dynamic Question Generation ---
+        function initSurveyForm() {
+            const stream = currentUser.stream;
+            document.getElementById('survey-stream-label').innerText = stream;
+
+            const passionContainer = document.getElementById('passion-checkboxes');
+            passionContainer.innerHTML = '';
+            const options = streamPassions[stream] || [];
+
+            options.forEach((p) => {
+                const isChecked = surveyData.passions.includes(p.id) ? 'checked' : '';
+                const div = document.createElement('label');
+                div.className = "flex items-center space-x-3 p-3 border rounded-xl cursor-pointer hover:bg-slate-50 transition border-slate-200";
+                div.innerHTML = `
+                    <input type="checkbox" name="passion" value="${p.id}" ${isChecked} onchange="onPassionChanged()" class="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500">
+                    <span class="text-xs font-bold text-slate-700">${p.label}</span>
+                `;
+                passionContainer.appendChild(div);
+            });
+
+            if (surveyData.skillLevel) {
+                const radio = document.querySelector(`input[name="skill_level"][value="${surveyData.skillLevel}"]`);
+                if (radio) radio.checked = true;
+            }
+
+            generateDynamicAssessmentQuestions();
+        }
+
+        function onPassionChanged() {
+            const checkedPassions = document.querySelectorAll('input[name="passion"]:checked');
+            if (checkedPassions.length > 2) {
+                event.target.checked = false;
+                alert('You can select a maximum of 2 top passion domains.');
+                return;
+            }
+            surveyData.passions = Array.from(checkedPassions).map(cb => cb.value);
+            generateDynamicAssessmentQuestions();
+        }
+
+        function generateDynamicAssessmentQuestions() {
+            const stream = currentUser.stream;
+            const pool = questionBank[stream] || [];
+            const selectedPassions = surveyData.passions;
+
+            let filteredPool = pool.filter(q => selectedPassions.includes(q.domain));
+            if (filteredPool.length < 5) {
+                const remaining = pool.filter(q => !filteredPool.includes(q));
+                filteredPool = filteredPool.concat(remaining);
+            }
+
+            let shuffled = [...filteredPool].sort(() => 0.5 - Math.random());
+            currentDynamicQuestions = shuffled.slice(0, 5);
+
+            const assessmentContainer = document.getElementById('dynamic-assessment-container');
+            assessmentContainer.innerHTML = '';
+
+            currentDynamicQuestions.forEach((q, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = "bg-slate-50 p-4 rounded-xl border border-slate-200";
+                
+                let optionsHtml = '';
+                q.options.forEach((opt) => {
+                    const isChecked = (surveyData.assessmentAnswers[q.id] === opt) ? 'checked' : '';
+                    optionsHtml += `
+                        <label class="flex items-center space-x-2 text-xs text-slate-700 cursor-pointer">
+                            <input type="radio" name="${q.id}" value="${opt}" ${isChecked} class="text-indigo-600">
+                            <span>${opt}</span>
+                        </label>
+                    `;
+                });
+
+                qDiv.innerHTML = `
+                    <p class="text-xs font-bold text-indigo-900 mb-2">Q${idx + 1}. ${q.text}</p>
+                    <div class="space-y-1.5">${optionsHtml}</div>
+                `;
+                assessmentContainer.appendChild(qDiv);
+            });
+        }
+
+        function submitSurvey() {
+            const checkedPassions = document.querySelectorAll('input[name="passion"]:checked');
+            if (checkedPassions.length === 0) {
+                alert('Please select at least 1 passion domain (up to 2).');
+                return;
+            }
+
+            const skillLevelRadio = document.querySelector('input[name="skill_level"]:checked');
+            if (!skillLevelRadio) {
+                alert('Please select your current technical/analytical comfort level.');
+                return;
+            }
+
+            let answers = {};
+            for (let q of currentDynamicQuestions) {
+                const selectedOpt = document.querySelector(`input[name="${q.id}"]:checked`);
+                if (!selectedOpt) {
+                    alert(`Please answer assessment question: ${q.text}`);
+                    return;
+                }
+                answers[q.id] = selectedOpt.value;
+            }
+
+            surveyData.passions = Array.from(checkedPassions).map(cb => cb.value);
+            surveyData.skillLevel = skillLevelRadio.value;
+            surveyData.assessmentAnswers = answers;
+
+            saveSessionToStorage();
+
+            document.getElementById('view-survey').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.remove('hidden');
+
+            generateRankings();
+        }
+
+        function retakeSurvey() {
+            if (isPathwayLocked) {
+                alert('Your career pathway is locked. You cannot retake the survey.');
+                return;
+            }
+            selectedCareer = null;
+            mentorStatus = 'not_submitted';
+            saveSessionToStorage();
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-roadmap').classList.add('hidden');
+            document.getElementById('view-survey').classList.remove('hidden');
+            initSurveyForm();
+        }
+
+        // --- Algorithmic AI Scoring & Ranking Engine across 10 Roles ---
+        function generateRankings() {
+            const stream = currentUser.stream;
+            const availableCareers = masterCareerPool[stream] || [];
+
+            let scoredCareers = availableCareers.map(career => {
+                let score = 65;
+                let matchReasons = [];
+
+                let passionMatchedCount = 0;
+                surveyData.passions.forEach(pId => {
+                    if (career.domainKeywords.includes(pId)) {
+                        score += 15;
+                        passionMatchedCount++;
+                    }
+                });
+
+                if (passionMatchedCount > 0) {
+                    matchReasons.push(`High alignment with your selected passion domains (${passionMatchedCount} matching domain core areas).`);
+                } else {
+                    matchReasons.push(`Provides a strong interdisciplinary bridge toward your professional profile.`);
+                }
+
+                if (surveyData.skillLevel === 'Advanced') {
+                    score += 12;
+                    matchReasons.push(`Your advanced skill confidence accelerates mastery of this 12-week roadmap.`);
+                } else if (surveyData.skillLevel === 'Intermediate') {
+                    score += 8;
+                    matchReasons.push(`Your intermediate foundational knowledge aligns well with the bridge milestones.`);
+                } else {
+                    score += 5;
+                    matchReasons.push(`Designed with gentle prerequisites to ease your transition from beginner to job-ready.`);
+                }
+
+                let assessmentBonus = 0;
+                Object.keys(surveyData.assessmentAnswers).forEach(qKey => {
+                    const val = surveyData.assessmentAnswers[qKey];
+                    if (val.includes('Built') || val.includes('Advanced') || val.includes('Active') || val.includes('Published') || val.includes('Conducted') || val.includes('Automated')) {
+                        assessmentBonus += 3;
+                    } else if (val.includes('Comfortable') || val.includes('Moderate') || val.includes('Good') || val.includes('Basic')) {
+                        assessmentBonus += 2;
+                    } else {
+                        assessmentBonus += 1;
+                    }
+                });
+                score += Math.min(assessmentBonus, 10);
+                matchReasons.push(`Your assessment responses validate competency in ${career.coreSkills[0]} and ${career.coreSkills[1]}.`);
+
+                let finalScore = Math.min(Math.max(score, 76), 98);
+
+                return {
+                    ...career,
+                    matchScore: finalScore,
+                    matchReason: matchReasons.join(' ')
+                };
+            });
+
+            scoredCareers.sort((a, b) => b.matchScore - a.matchScore);
+            currentRankedCareers = scoredCareers;
+
+            renderRankingsAndDB();
+        }
+
+        // --- Dashboard & Career DB Rendering ---
+        function renderRankingsAndDB() {
+            const grid = document.getElementById('career-rankings-grid');
+            grid.innerHTML = '';
+
+            const retakeBtn = document.getElementById('btn-retake-survey');
+            if (isPathwayLocked) {
+                retakeBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                retakeBtn.title = "Pathway is locked. Retaking survey is disabled.";
+            }
+
+            const top3 = currentRankedCareers.slice(0, 3);
+
+            top3.forEach((career, idx) => {
+                const badgeColor = idx === 0 ? 'bg-amber-500 text-white' : (idx === 1 ? 'bg-indigo-600 text-white' : 'bg-slate-700 text-white');
+                const naukriSearchKeyword = encodeURIComponent(career.title.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().replace(/\s+/g, '-'));
+                const naukriUrl = `https://www.naukri.com/${naukriSearchKeyword}-jobs-in-maharashtra`;
+
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl shadow-md border border-slate-200 p-6 flex flex-col justify-between hover:shadow-xl transition relative";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="text-xs font-extrabold px-2.5 py-1 rounded-lg ${badgeColor}">Match: ${career.matchScore}%</span>
+                            <span class="text-xs text-slate-400 font-bold">Rank #${idx + 1}</span>
+                        </div>
+                        <h4 class="text-base font-bold text-slate-900 mb-2">${career.title}</h4>
+                        <p class="text-xs text-slate-600 mb-4 leading-relaxed">${career.description}</p>
+                        <div class="bg-indigo-50 border border-indigo-100 p-3 rounded-xl mb-4">
+                            <p class="text-[11px] font-bold text-indigo-900 mb-1"><i class="fa-solid fa-wand-magic-sparkles mr-1 text-indigo-600"></i> AI Match Reasoning:</p>
+                            <p class="text-[11px] text-indigo-800 leading-snug">${career.matchReason}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="mb-4 flex flex-wrap gap-1">
+                            ${career.coreSkills.map(s => `<span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-md">${s}</span>`).join('')}
+                        </div>
+                        <div class="space-y-2">
+                            <button onclick="openRoadmap('${career.id}')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold py-2.5 rounded-xl transition shadow">
+                                ${isPathwayLocked && selectedCareer && selectedCareer.id === career.id ? 'View Locked Pathway' : 'View 12-Week Roadmap'} <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                            <a href="${naukriUrl}" target="_blank" class="w-full bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 text-xs font-bold py-2 rounded-xl transition flex items-center justify-center">
+                                <i class="fa-solid fa-briefcase mr-1.5"></i> Search Jobs on Naukri <i class="fa-solid fa-external-link ml-1 text-[9px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            renderCareerDB(currentRankedCareers);
+        }
+
+        function renderCareerDB(careers) {
+            const dbList = document.getElementById('career-db-list');
+            dbList.innerHTML = '';
+
+            careers.forEach(career => {
+                const naukriSearchKeyword = encodeURIComponent(career.title.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().replace(/\s+/g, '-'));
+                const naukriUrl = `https://www.naukri.com/${naukriSearchKeyword}-jobs-in-maharashtra`;
+
+                const item = document.createElement('div');
+                item.className = "bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between";
+                item.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-1">
+                            <h5 class="text-sm font-bold text-slate-900">${career.title}</h5>
+                            <span class="text-[10px] bg-indigo-100 text-indigo-800 font-bold px-2 py-0.5 rounded">${career.matchScore}% Match</span>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-3">${career.description}</p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold uppercase text-slate-500 mb-1">Core Competencies Required:</p>
+                        <div class="flex flex-wrap gap-1 mb-3">
+                            ${career.coreSkills.map(s => `<span class="bg-white border text-slate-700 text-[10px] px-2 py-0.5 rounded">${s}</span>`).join('')}
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="openRoadmap('${career.id}')" class="bg-slate-200 hover:bg-indigo-600 hover:text-white text-slate-700 text-xs font-bold py-1.5 rounded-lg transition">
+                                Roadmap
+                            </button>
+                            <a href="${naukriUrl}" target="_blank" class="bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-200 text-xs font-bold py-1.5 rounded-lg transition flex items-center justify-center">
+                                Naukri Jobs <i class="fa-solid fa-external-link ml-1 text-[9px]"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                dbList.appendChild(item);
+            });
+        }
+
+        function filterCareerDB() {
+            const query = document.getElementById('career-search').value.toLowerCase();
+            const stream = currentUser.stream;
+            const careers = (currentRankedCareers.length > 0 ? currentRankedCareers : (masterCareerPool[stream] || [])).filter(c => c.title.toLowerCase().includes(query) || c.description.toLowerCase().includes(query));
+            renderCareerDB(careers);
+        }
+
+        // --- Roadmap & Mentor Functions ---
+        function openRoadmap(careerId, isRestoring = false) {
+            const stream = currentUser.stream;
+            const careers = masterCareerPool[stream] || [];
+            selectedCareer = careers.find(c => c.id === careerId);
+
+            if (!selectedCareer) return;
+
+            if (!isRestoring) {
+                saveSessionToStorage();
+            }
+
+            document.getElementById('roadmap-career-title').innerText = isPathwayLocked 
+                ? `Locked Pathway: ${selectedCareer.title}` 
+                : `12-Week Roadmap: ${selectedCareer.title}`;
+            
+            const naukriSearchKeyword = encodeURIComponent(selectedCareer.title.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().replace(/\s+/g, '-'));
+            document.getElementById('naukri-portal-link').href = `https://www.naukri.com/${naukriSearchKeyword}-jobs-in-maharashtra`;
+
+            updateMentorBadgeUI();
+
+            const weeksContainer = document.getElementById('weeks-container');
+            weeksContainer.innerHTML = '';
+
+            selectedCareer.roadmap.forEach((wk, index) => {
+                const isCompleted = surveyData.completedMilestones && surveyData.completedMilestones.includes(index);
+                const wkCard = document.createElement('div');
+                wkCard.className = `bg-white rounded-2xl shadow-sm border p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 ${isCompleted ? 'border-emerald-300 bg-emerald-50/20' : 'border-slate-200'}`;
+                wkCard.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs font-bold bg-indigo-50 text-indigo-700 px-2.5 py-1 rounded-lg border border-indigo-100">${wk.week}</span>
+                            ${isCompleted ? '<span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded"><i class="fa-solid fa-check mr-1"></i> Completed</span>' : ''}
+                        </div>
+                        <h4 class="text-sm font-bold text-slate-900 mt-2">${wk.title}</h4>
+                        <p class="text-xs text-slate-600">${wk.desc}</p>
+                    </div>
+                    <div class="w-full md:w-auto flex flex-col md:flex-row items-end md:items-center gap-3">
+                        <a href="${wk.courseUrl}" target="_blank" class="inline-flex items-center justify-center bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs px-4 py-2 rounded-xl border border-indigo-200 transition">
+                            <i class="fa-solid fa-graduation-cap mr-2 text-indigo-600"></i> ${wk.courseName} <i class="fa-solid fa-external-link ml-1.5 text-[10px]"></i>
+                        </a>
+                        <button onclick="toggleMilestone(${index})" class="text-xs font-bold px-3 py-2 rounded-xl border transition ${isCompleted ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200'}">
+                            ${isCompleted ? '<i class="fa-solid fa-check mr-1"></i> Done' : 'Mark Complete'}
+                        </button>
+                    </div>
+                `;
+                weeksContainer.appendChild(wkCard);
+            });
+
+            document.getElementById('view-dashboard').classList.add('hidden');
+            document.getElementById('view-survey').classList.add('hidden');
+            document.getElementById('view-mentor-dashboard').classList.add('hidden');
+            document.getElementById('view-roadmap').classList.remove('hidden');
+        }
+
+        function toggleMilestone(index) {
+            if (!surveyData.completedMilestones) surveyData.completedMilestones = [];
+            const pos = surveyData.completedMilestones.indexOf(index);
+            if (pos >= 0) {
+                surveyData.completedMilestones.splice(pos, 1);
+            } else {
+                surveyData.completedMilestones.push(index);
+            }
+            saveSessionToStorage();
+            if (selectedCareer) openRoadmap(selectedCareer.id, true);
+        }
+
+        function backToDashboard() {
+            document.getElementById('view-roadmap').classList.add('hidden');
+            document.getElementById('view-dashboard').classList.remove('hidden');
+        }
+
+        function requestMentorReview() {
+            if (isPathwayLocked) return;
+            mentorStatus = 'pending';
+            saveSessionToStorage();
+            updateMentorBadgeUI();
+            alert(`Your roadmap for "${selectedCareer.title}" has been successfully submitted to Dr. Rajesh Sharma for review.`);
+        }
+
+        function updateMentorBadgeUI() {
+            const badge = document.getElementById('mentor-status-badge');
+            const reqBtn = document.getElementById('btn-request-review');
+            const lockBtn = document.getElementById('btn-lock-pathway');
+
+            if (isPathwayLocked) {
+                badge.className = "bg-emerald-100 border border-emerald-300 text-emerald-900 px-4 py-2 rounded-xl text-xs font-bold flex items-center";
+                badge.innerHTML = `<i class="fa-solid fa-lock mr-2 text-emerald-700"></i> Pathway Officially Locked & Active`;
+                reqBtn.disabled = true;
+                reqBtn.className = "bg-slate-400 text-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl cursor-not-allowed";
+                lockBtn.disabled = true;
+                lockBtn.className = "bg-slate-400 text-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl cursor-not-allowed";
+            } else if (mentorStatus === 'approved') {
+                badge.className = "bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-2 rounded-xl text-xs font-bold flex items-center";
+                badge.innerHTML = `<i class="fa-solid fa-circle-check mr-2 text-emerald-600"></i> Approved by Faculty Mentor`;
+                reqBtn.disabled = true;
+                reqBtn.className = "bg-slate-400 text-slate-200 text-xs font-bold px-4 py-2.5 rounded-xl cursor-not-allowed";
+                
+                lockBtn.disabled = false;
+                lockBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow";
+            } else if (mentorStatus === 'revision') {
+                badge.className = "bg-red-50 border border-red-200 text-red-800 px-4 py-2 rounded-xl text-xs font-bold flex items-center";
+                badge.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-2 text-red-600"></i> Revision Requested by Mentor`;
+                reqBtn.disabled = false;
+                reqBtn.className = "bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow";
+                
+                lockBtn.disabled = true;
+                lockBtn.className = "bg-slate-600 text-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl cursor-not-allowed";
+            } else if (mentorStatus === 'pending') {
+                badge.className = "bg-amber-50 border border-amber-200 text-amber-800 px-4 py-2 rounded-xl text-xs font-bold flex items-center";
+                badge.innerHTML = `<i class="fa-solid fa-clock mr-2 text-amber-600"></i> Pending Faculty Mentor Review`;
+                reqBtn.disabled = false;
+                reqBtn.className = "bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow";
+                
+                lockBtn.disabled = true;
+                lockBtn.className = "bg-slate-600 text-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl cursor-not-allowed";
+            } else {
+                badge.className = "bg-slate-100 border border-slate-200 text-slate-700 px-4 py-2 rounded-xl text-xs font-bold flex items-center";
+                badge.innerHTML = `<i class="fa-solid fa-paper-plane mr-2 text-slate-500"></i> Ready to Submit for Review`;
+                reqBtn.disabled = false;
+                reqBtn.className = "bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow";
+                
+                lockBtn.disabled = true;
+                lockBtn.className = "bg-slate-600 text-slate-300 text-xs font-bold px-4 py-2.5 rounded-xl cursor-not-allowed";
+            }
+        }
+
+        // --- Faculty Mentor Portal Functions ---
+        function renderMentorSubmissions() {
+            const pendingContainer = document.getElementById('mentor-submissions-list');
+            const approvedContainer = document.getElementById('mentor-approved-list');
+            pendingContainer.innerHTML = '';
+            approvedContainer.innerHTML = '';
+
+            const submissions = JSON.parse(localStorage.getItem('pathfinder_global_submissions') || '[]');
+
+            const pendingItems = submissions.filter(s => s.status === 'pending' || s.status === 'revision');
+            const approvedItems = submissions.filter(s => s.status === 'approved');
+
+            if (pendingItems.length === 0) {
+                pendingContainer.innerHTML = `<p class="text-xs text-slate-400 py-2">No pending student submissions in queue.</p>`;
+            } else {
+                pendingItems.forEach((sub) => {
+                    const statusBadge = sub.status === 'revision' 
+                        ? `<span class="bg-red-100 text-red-800 text-[10px] font-bold px-2.5 py-1 rounded">Revision Requested</span>`
+                        : `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2.5 py-1 rounded">Pending Review</span>`;
+
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4";
+                    card.innerHTML = `
+                        <div class="space-y-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-slate-900 text-sm">${sub.name}</span>
+                                <span class="text-[10px] bg-indigo-100 text-indigo-800 font-bold px-2 py-0.5 rounded">${sub.stream}</span>
+                                ${statusBadge}
+                            </div>
+                            <p class="text-xs text-slate-600">College: <span class="font-semibold">${sub.college}</span> | Phone: +91 ${sub.phone}</p>
+                            <p class="text-xs text-indigo-900 font-bold mt-1">Requested Career Path: ${sub.careerTitle}</p>
+                            <p class="text-[11px] text-slate-500">Passions: ${sub.passions.join(', ')} | Level: ${sub.skillLevel} | Submitted: ${sub.timestamp}</p>
+                        </div>
+                        <div class="flex items-center space-x-2 w-full md:w-auto">
+                            <button onclick="mentorApproveSubmission('${sub.phone}', 'approved')" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">
+                                <i class="fa-solid fa-check mr-1"></i> Approve
+                            </button>
+                            <button onclick="mentorApproveSubmission('${sub.phone}', 'revision')" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl transition shadow">
+                                <i class="fa-solid fa-rotate-left mr-1"></i> Revise
+                            </button>
+                        </div>
+                    `;
+                    pendingContainer.appendChild(card);
+                });
+            }
+
+            if (approvedItems.length === 0) {
+                approvedContainer.innerHTML = `<p class="text-xs text-slate-400 py-2">No approved pathways yet.</p>`;
+            } else {
+                approvedItems.forEach((sub) => {
+                    const card = document.createElement('div');
+                    card.className = "bg-emerald-50/50 border border-emerald-200 rounded-2xl p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4";
+                    card.innerHTML = `
+                        <div class="space-y-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-slate-900 text-sm">${sub.name}</span>
+                                <span class="text-[10px] bg-indigo-100 text-indigo-800 font-bold px-2 py-0.5 rounded">${sub.stream}</span>
+                                <span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-1 rounded"><i class="fa-solid fa-check mr-1"></i> Approved</span>
+                            </div>
+                            <p class="text-xs text-slate-600">College: <span class="font-semibold">${sub.college}</span> | Phone: +91 ${sub.phone}</p>
+                            <p class="text-xs text-indigo-900 font-bold mt-1">Approved Career Path: ${sub.careerTitle}</p>
+                            <p class="text-[11px] text-slate-500">Submitted: ${sub.timestamp}</p>
+                        </div>
+                        <div>
+                            <span class="text-xs font-bold text-emerald-700 bg-white px-3 py-1.5 rounded-xl border border-emerald-200 inline-block">
+                                <i class="fa-solid fa-shield-check mr-1"></i> Institutional Sign-off Active
+                            </span>
+                        </div>
+                    `;
+                    approvedContainer.appendChild(card);
+                });
+            }
+        }
+
+        function mentorApproveSubmission(phone, status) {
+            let submissions = JSON.parse(localStorage.getItem('pathfinder_global_submissions') || '[]');
+            const sub = submissions.find(s => s.phone === phone);
+            if (sub) {
+                sub.status = status;
+                localStorage.setItem('pathfinder_global_submissions', JSON.stringify(submissions));
+
+                const userKey = 'pathfinder_user_' + phone;
+                const userStored = localStorage.getItem(userKey);
+                if (userStored) {
+                    let parsed = JSON.parse(userStored);
+                    parsed.mentorStatus = status;
+                    localStorage.setItem(userKey, JSON.stringify(parsed));
+                }
+
+                const activeSession = localStorage.getItem('pathfinder_user_session');
+                if (activeSession) {
+                    let parsedSession = JSON.parse(activeSession);
+                    if (parsedSession.currentUser.phone === phone) {
+                        parsedSession.mentorStatus = status;
+                        localStorage.setItem('pathfinder_user_session', JSON.stringify(parsedSession));
+                    }
+                }
+            }
+
+            alert(`Submission for student (+91 ${phone}) updated to: ${status.toUpperCase()}`);
+            renderMentorSubmissions();
+        }
+
+        function lockPathway() {
+            if (mentorStatus !== 'approved') {
+                alert('Pathway must be approved by your faculty mentor before locking.');
+                return;
+            }
+            isPathwayLocked = true;
+            saveSessionToStorage();
+            updateMentorBadgeUI();
+            alert(`Success! Your 12-week learning pathway for "${selectedCareer.title}" has been officially locked and synced with your college profile at ${currentUser.college}.`);
+            openRoadmap(selectedCareer.id, true);
+        }
+    </script>
+</body>
+</html>
