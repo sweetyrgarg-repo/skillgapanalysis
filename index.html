@@ -49,6 +49,7 @@
                 <button onclick="switchRoleTab('mentor')" id="tab-mentor" class="py-2 text-xs font-bold rounded-lg text-slate-600 transition">Faculty Mentor</button>
             </div>
 
+            <!-- Student Login (Name & Phone Only) -->
             <div id="form-student" class="space-y-4">
                 <div id="auth-step-1" class="space-y-4">
                     <div>
@@ -62,28 +63,6 @@
                             <input type="tel" id="login-phone" maxlength="10" placeholder="9876543210" class="w-full px-4 py-2.5 rounded-r-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm">
                         </div>
                     </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">College in Maharashtra</label>
-                        <select id="login-college" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm bg-white">
-                            <option value="">Select your institution...</option>
-                            <option value="COEP Technological University, Pune">COEP Technological University, Pune</option>
-                            <option value="VJTI, Mumbai">VJTI, Mumbai</option>
-                            <option value="SPIT, Mumbai">SPIT, Mumbai</option>
-                            <option value="Nagindas Khandwala College, Mumbai">Nagindas Khandwala College, Mumbai</option>
-                            <option value="HR College of Commerce & Economics, Mumbai">HR College of Commerce & Economics, Mumbai</option>
-                            <option value="St. Xavier's College, Mumbai">St. Xavier's College, Mumbai</option>
-                            <option value="Fergusson College, Pune">Fergusson College, Pune</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Primary Stream</label>
-                        <select id="login-stream" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-sm bg-white">
-                            <option value="">Select your primary stream...</option>
-                            <option value="STEAM">STEAM (Science, Technology, Engineering, Applied Math)</option>
-                            <option value="Commerce">Commerce & Business Management</option>
-                            <option value="Arts & Humanities">Arts, Humanities & Social Sciences</option>
-                        </select>
-                    </div>
                     <button onclick="requestOTP()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl transition shadow-lg mt-2">
                         Send Verification OTP <i class="fa-solid fa-arrow-right ml-2"></i>
                     </button>
@@ -96,7 +75,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 uppercase mb-1 text-center">Enter 4-Digit OTP</label>
-                        <input type="text" id="login-otp" maxlength="4" placeholder="1234" class="w-36 mx-auto block text-center text-2xl tracking-widest px-4 py-2 rounded-xl border border-slate-300 font-bold">
+                        <input type="text" id="login-otp" maxlength="4" placeholder="1234" class="w-36 mx-auto block text-center text-2xl tracking-widest px-4 py-2 rounded-xl border border-slate-300 font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     </div>
                     <button onclick="verifyOTP()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-xl transition shadow-lg">
                         Verify & Enter Portal <i class="fa-solid fa-check ml-2"></i>
@@ -107,14 +86,23 @@
                 </div>
             </div>
 
+            <!-- Mentor Login (Stream Based) -->
             <div id="form-mentor" class="hidden space-y-4">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 mb-2">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase mb-1">Demo Mentor Accounts:</p>
+                    <ul class="text-[11px] text-slate-600 space-y-0.5">
+                        <li><span class="font-bold text-indigo-600">STEAM:</span> sweety.garg@maharashtra.edu.in</li>
+                        <li><span class="font-bold text-indigo-600">Commerce:</span> amrita.agrawal@maharashtra.edu.in</li>
+                        <li><span class="font-bold text-indigo-600">Arts:</span> ashish.modi@maharashtra.edu.in</li>
+                    </ul>
+                </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Faculty Email</label>
-                    <input type="email" id="mentor-email" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm" value="Sweety.Garg@maharashtra.edu.in">
+                    <input type="email" id="mentor-email" placeholder="e.g. sweety.garg@maharashtra.edu.in" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Password</label>
-                    <input type="password" id="mentor-pass" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm" value="mentor123">
+                    <input type="password" id="mentor-pass" placeholder="Enter any password" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 </div>
                 <button onclick="loginMentor()" class="w-full bg-indigo-900 hover:bg-indigo-800 text-white font-semibold py-3 rounded-xl transition shadow-lg mt-2">
                     Access Faculty Review Dashboard <i class="fa-solid fa-chalkboard-user ml-2"></i>
@@ -122,44 +110,79 @@
             </div>
         </section>
 
-        <!-- VIEW 2: INTEREST SURVEY & SKILL ASSESSMENT -->
+        <!-- VIEW 2: INTEREST SURVEY & SKILL ASSESSMENT (Single Page Dynamic Render) -->
         <section id="view-survey" class="hidden max-w-3xl mx-auto bg-white rounded-2xl shadow-xl border border-slate-100 p-8 my-6">
             <div class="border-b border-slate-100 pb-4 mb-6 flex justify-between items-center">
                 <div>
                     <h2 class="text-xl font-bold text-slate-900">Comprehensive Interest & Skill Survey</h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Stream: <span id="survey-stream-label" class="font-bold text-indigo-600"></span></p>
+                    <p class="text-xs text-slate-500 mt-0.5">Welcome, <span id="survey-student-name" class="font-bold text-indigo-600"></span></p>
                 </div>
-                <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full">Step 1 of 2</span>
             </div>
+            
             <div class="space-y-6">
-                <div>
-                    <label class="block text-sm font-bold text-slate-800 mb-1">1. Select Your Top <span class="text-indigo-600 font-extrabold">2 Passion Domains</span></label>
-                    <div id="passion-checkboxes" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3"></div>
-                </div>
-                <div>
-                    <label class="block text-sm font-bold text-slate-800 mb-2">2. Rate Your Current Technical/Analytical Comfort Level</label>
-                    <div class="grid grid-cols-3 gap-3">
-                        <label class="border rounded-xl p-3 text-center cursor-pointer hover:border-indigo-600 transition flex flex-col items-center">
-                            <input type="radio" name="skill_level" value="Beginner" class="mb-1 text-indigo-600">
-                            <span class="text-xs font-bold text-slate-700">Beginner</span>
-                        </label>
-                        <label class="border rounded-xl p-3 text-center cursor-pointer hover:border-indigo-600 transition flex flex-col items-center">
-                            <input type="radio" name="skill_level" value="Intermediate" class="mb-1 text-indigo-600">
-                            <span class="text-xs font-bold text-slate-700">Intermediate</span>
-                        </label>
-                        <label class="border rounded-xl p-3 text-center cursor-pointer hover:border-indigo-600 transition flex flex-col items-center">
-                            <input type="radio" name="skill_level" value="Advanced" class="mb-1 text-indigo-600">
-                            <span class="text-xs font-bold text-slate-700">Advanced</span>
-                        </label>
+                <!-- Top Section: College & Stream -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100">
+                    <div>
+                        <label class="block text-xs font-semibold text-indigo-900 uppercase mb-1">College in Maharashtra</label>
+                        <select id="survey-college" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs bg-white">
+                            <option value="">Select your institution...</option>
+                            <option value="COEP Technological University, Pune">COEP Technological University, Pune</option>
+                            <option value="VJTI, Mumbai">VJTI, Mumbai</option>
+                            <option value="SPIT, Mumbai">SPIT, Mumbai</option>
+                            <option value="Nagindas Khandwala College, Mumbai">Nagindas Khandwala College, Mumbai</option>
+                            <option value="HR College of Commerce & Economics, Mumbai">HR College of Commerce & Economics, Mumbai</option>
+                            <option value="St. Xavier's College, Mumbai">St. Xavier's College, Mumbai</option>
+                            <option value="Fergusson College, Pune">Fergusson College, Pune</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-indigo-900 uppercase mb-1">Primary Academic Stream</label>
+                        <select id="survey-stream" onchange="onStreamSelected()" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs bg-white">
+                            <option value="">Select your primary stream...</option>
+                            <option value="STEAM">STEAM (Science, Tech, Eng, Applied Math)</option>
+                            <option value="Commerce">Commerce & Business Management</option>
+                            <option value="Arts & Humanities">Arts, Humanities & Social Sciences</option>
+                        </select>
                     </div>
                 </div>
-                <div class="border-t border-slate-100 pt-6">
-                    <h3 class="text-sm font-extrabold uppercase tracking-wider text-indigo-900 mb-4"><i class="fa-solid fa-bolt text-amber-500 mr-2"></i> Skill Assessment (5 Dynamic Questions)</h3>
-                    <div id="dynamic-assessment-container" class="space-y-6"></div>
+
+                <!-- Hidden until stream is selected -->
+                <div id="survey-questions-area" class="hidden space-y-6 animate-fade-in">
+                    <!-- Passions -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-800 mb-1">1. Select Your Top <span class="text-indigo-600 font-extrabold">2 Passion Domains</span></label>
+                        <div id="passion-checkboxes" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3"></div>
+                    </div>
+
+                    <!-- Current Skills -->
+                    <div>
+                        <label class="block text-sm font-bold text-slate-800 mb-2">2. Rate Your Current Technical/Analytical Comfort Level</label>
+                        <div class="grid grid-cols-3 gap-3">
+                            <label class="border rounded-xl p-3 text-center cursor-pointer hover:border-indigo-600 transition flex flex-col items-center">
+                                <input type="radio" name="skill_level" value="Beginner" class="mb-1 text-indigo-600">
+                                <span class="text-xs font-bold text-slate-700">Beginner</span>
+                            </label>
+                            <label class="border rounded-xl p-3 text-center cursor-pointer hover:border-indigo-600 transition flex flex-col items-center">
+                                <input type="radio" name="skill_level" value="Intermediate" class="mb-1 text-indigo-600">
+                                <span class="text-xs font-bold text-slate-700">Intermediate</span>
+                            </label>
+                            <label class="border rounded-xl p-3 text-center cursor-pointer hover:border-indigo-600 transition flex flex-col items-center">
+                                <input type="radio" name="skill_level" value="Advanced" class="mb-1 text-indigo-600">
+                                <span class="text-xs font-bold text-slate-700">Advanced</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Assessment -->
+                    <div class="border-t border-slate-100 pt-6">
+                        <h3 class="text-sm font-extrabold uppercase tracking-wider text-indigo-900 mb-4"><i class="fa-solid fa-bolt text-amber-500 mr-2"></i> Skill Assessment (5 Dynamic Questions)</h3>
+                        <div id="dynamic-assessment-container" class="space-y-6"></div>
+                    </div>
+
+                    <button onclick="submitSurvey()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-xl transition shadow-lg mt-6">
+                        Run AI Career & Skill-Gap Analysis <i class="fa-solid fa-wand-magic-sparkles ml-2"></i>
+                    </button>
                 </div>
-                <button onclick="submitSurvey()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3.5 rounded-xl transition shadow-lg mt-6">
-                    Run AI Career & Skill-Gap Analysis <i class="fa-solid fa-wand-magic-sparkles ml-2"></i>
-                </button>
             </div>
         </section>
 
@@ -168,7 +191,7 @@
             <div class="bg-gradient-to-r from-indigo-900 to-indigo-800 text-white rounded-2xl p-6 shadow-xl relative">
                 <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <div class="text-indigo-300 text-xs font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-microchip"></i> Dynamic Cohort Match Engine v4.9</div>
+                        <div class="text-indigo-300 text-xs font-bold uppercase tracking-widest mb-1"><i class="fa-solid fa-microchip"></i> Dynamic Cohort Match Engine v5.5</div>
                         <h2 class="text-2xl font-black">AI Career Rankings & Match Analysis</h2>
                         <p class="text-sm text-indigo-100 mt-1 max-w-2xl">Evaluated across 30+ specialized career options based on your unique multi-passion choices.</p>
                     </div>
@@ -214,7 +237,7 @@
                 </div>
                 <div class="bg-white/10 rounded-xl p-4 border border-white/20 flex flex-col md:flex-row justify-between items-center gap-4">
                     <div class="text-xs text-indigo-100">
-                        <p class="font-bold text-white text-sm"><i class="fa-solid fa-chalkboard-user mr-2 text-amber-400"></i> Assigned Mentor: Dr. Sweety Garg</p>
+                        <p class="font-bold text-white text-sm"><i class="fa-solid fa-chalkboard-user mr-2 text-amber-400"></i> Assigned Mentor: <span id="assigned-mentor-name">Pending Assignment</span></p>
                         <p class="mt-1">Institution: <span id="mentor-college-text">Maharashtra College</span></p>
                     </div>
                     <div class="flex space-x-3">
@@ -229,16 +252,18 @@
         <section id="view-mentor-dashboard" class="hidden space-y-6 my-4">
             <div class="bg-indigo-900 text-white rounded-2xl p-6 shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <span class="bg-indigo-600 text-indigo-100 text-xs font-bold px-3 py-1 rounded-full uppercase">Faculty Portal</span>
+                    <span id="mentor-dashboard-badge" class="bg-indigo-600 text-indigo-100 text-xs font-bold px-3 py-1 rounded-full uppercase">Faculty Portal</span>
                     <h2 class="text-2xl font-black mt-2">Mentor Review & Approval Queue</h2>
                 </div>
                 <button onclick="renderMentorSubmissions()" class="bg-white text-indigo-900 font-bold px-3 py-1.5 rounded-lg text-xs hover:bg-indigo-50 transition"><i class="fa-solid fa-rotate mr-1"></i> Refresh Queue</button>
             </div>
-            <div class="bg-white rounded-2xl shadow-md border p-6">
+            
+            <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-6">
                 <h3 class="text-base font-bold text-slate-900 mb-4"><i class="fa-solid fa-clipboard-list text-indigo-600 mr-2"></i> Pending Review Queue</h3>
                 <div id="mentor-submissions-list" class="space-y-4"></div>
             </div>
-            <div class="bg-white rounded-2xl shadow-md border p-6 mt-6">
+            
+            <div class="bg-white rounded-2xl shadow-md border border-slate-100 p-6 mt-6">
                 <h3 class="text-base font-bold text-emerald-800 mb-4"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i> Approved Student Pathways</h3>
                 <div id="mentor-approved-list" class="space-y-4"></div>
             </div>
@@ -252,6 +277,7 @@
 
     <!-- JavaScript Application Logic -->
     <script>
+        // --- Master State ---
         let currentUser = { name: '', phone: '', college: '', stream: '' };
         let surveyData = { passions: [], skillLevel: '', assessmentAnswers: {}, completedMilestones: [] };
         let currentDynamicQuestions = [];
@@ -259,7 +285,16 @@
         let selectedCareer = null;
         let mentorStatus = 'not_submitted';
         let isPathwayLocked = false;
+        let currentMentorStream = null;
 
+        // --- Stream-Specific Mentors Directory ---
+        const mentorDirectory = {
+            "STEAM": { name: "Dr. Sweety Garg", email: "sweety.garg@maharashtra.edu.in" },
+            "Commerce": { name: "Prof. Amrita Agrawal", email: "amrita.agrawal@maharashtra.edu.in" },
+            "Arts & Humanities": { name: "Dr. Ashish Modi", email: "ashish.modi@maharashtra.edu.in" }
+        };
+
+        // --- Master Data (Passions) ---
         const streamPassions = {
             "STEAM": [
                 { id: "ai_ml", label: "Artificial Intelligence & Machine Learning" },
@@ -287,6 +322,7 @@
             ]
         };
 
+        // --- Master Data (50+ Questions) ---
         const questionBank = {
             "STEAM": [
                 { id: "st_1", domain: "ai_ml", text: "How comfortable are you implementing matrix multiplication and gradient descent formulas?", options: ["Unfamiliar with calculus", "Understand concept theoretically", "Can code implementation from scratch"] },
@@ -302,7 +338,10 @@
                 { id: "st_11", domain: "devops", text: "Have you containerized applications using Docker and Docker Compose?", options: ["Never used Docker", "Run basic pre-built containers", "Wrote custom Dockerfiles and multi-container setups"] },
                 { id: "st_12", domain: "devops", text: "Are you familiar with CI/CD pipeline automation tools (GitHub Actions / Jenkins)?", options: ["Manual deployment only", "Used basic GitHub actions templates", "Built automated test and deploy pipelines"] },
                 { id: "st_13", domain: "ai_ml", text: "How well do you understand data normalization, scaling, and feature engineering?", options: ["Unfamiliar", "Know StandardScaler and MinMaxScaler", "Built custom domain feature extractors"] },
-                { id: "st_14", domain: "full_stack", text: "What database indexing and query optimization techniques do you apply?", options: ["None", "Basic primary/foreign keys", "Composite indexes and execution plan analysis"] }
+                { id: "st_14", domain: "full_stack", text: "What database indexing and query optimization techniques do you apply?", options: ["None", "Basic primary/foreign keys", "Composite indexes and execution plan analysis"] },
+                { id: "st_15", domain: "data_sci", text: "Do you have experience building and interpreting data visualization dashboards?", options: ["Never built one", "Used Excel charts", "Built interactive Plotly/Tableau dashboards"] },
+                { id: "st_16", domain: "cyber_sec", text: "What is your experience with CI/CD pipeline security (DevSecOps)?", options: ["Unfamiliar", "Know basic concepts", "Implemented automated security scans in pipelines"] },
+                { id: "st_17", domain: "full_stack", text: "How confident are you in designing scalable system architectures?", options: ["Beginner", "Can design simple monolithic apps", "Comfortable with microservices and load balancing"] }
             ],
             "Commerce": [
                 { id: "co_1", domain: "fin_tech", text: "How comfortable are you building Discounted Cash Flow (DCF) valuation models?", options: ["Never built one", "Built simple academic models", "Built professional DCF models with sensitivity tables"] },
@@ -316,7 +355,12 @@
                 { id: "co_9", domain: "entrepreneurship", text: "Have you drafted a pitch deck or financial runway projection for a startup idea?", options: ["Never attempted", "Academic presentation deck", "Investor-ready pitch deck with unit economics"] },
                 { id: "co_10", domain: "fin_accounting", text: "How comfortable are you reconciling complex general ledgers and preparing tax schedules?", options: ["Basic bookkeeping", "College accounting problems", "Practical auditing experience"] },
                 { id: "co_11", domain: "fin_tech", text: "What is your understanding of blockchain smart contracts and decentralized finance (DeFi)?", options: ["Heard of crypto only", "Understand basic tokenomics", "Analyzed smart contract security and yield protocols"] },
-                { id: "co_12", domain: "digital_mkt", text: "How do you measure multi-touch attribution and customer lifetime value (LTV)?", options: ["Unfamiliar", "Know basic LTV formula", "Built predictive LTV and churn models"] }
+                { id: "co_12", domain: "digital_mkt", text: "How do you measure multi-touch attribution and customer lifetime value (LTV)?", options: ["Unfamiliar", "Know basic LTV formula", "Built predictive LTV and churn models"] },
+                { id: "co_13", domain: "fin_accounting", text: "Are you familiar with computing WACC and CAPM for corporate finance decisions?", options: ["Unfamiliar", "Studied formulas theoretically", "Applied in active financial models"] },
+                { id: "co_14", domain: "digital_mkt", text: "How well do you understand consumer psychology in branding and marketing?", options: ["Basic awareness", "Read marketing case studies", "Conducted A/B testing on behavioral triggers"] },
+                { id: "co_15", domain: "supply_chain", text: "What is your experience with Six Sigma or Lean operational processes?", options: ["Never heard of them", "Basic understanding", "Certified or actively implemented DMAIC projects"] },
+                { id: "co_16", domain: "entrepreneurship", text: "Have you calculated customer acquisition cost (CAC) vs. lifetime value (LTV)?", options: ["No", "Calculated for academic projects", "Optimized real business funnels based on CAC/LTV"] },
+                { id: "co_17", domain: "biz_analytics", text: "How comfortable are you presenting data findings to non-technical stakeholders?", options: ["Nervous", "Can present basic charts", "Highly comfortable leading data strategy meetings"] }
             ],
             "Arts & Humanities": [
                 { id: "ar_1", domain: "ui_ux", text: "How proficient are you in Figma component libraries, auto-layout, and design systems?", options: ["Basic wireframes", "Used auto-layout & components", "Built scalable design systems"] },
@@ -329,10 +373,16 @@
                 { id: "ar_8", domain: "corporate_comm", text: "How do you manage crisis communication and press release distribution?", options: ["Theoretical knowledge", "Simulated college PR exercise", "Managed live corporate/club communications"] },
                 { id: "ar_9", domain: "fine_arts", text: "What is your proficiency with digital illustration and motion graphics (Illustrator / After Effects)?", options: ["Traditional sketching", "Basic vector art", "Advanced vector design and motion animations"] },
                 { id: "ar_10", domain: "ui_ux", text: "How do you ensure accessibility standards (WCAG 2.1) in your interface designs?", options: ["Unfamiliar with accessibility", "Check basic color contrast", "Full screen reader and keyboard navigation audits"] },
-                { id: "ar_11", domain: "content_media", text: "What is your editorial strategy for measuring content engagement and bounce rates?", options: ["Ignore analytics", "Check page views", "Analyzed Google Analytics audience retention curves"] }
+                { id: "ar_11", domain: "content_media", text: "What is your editorial strategy for measuring content engagement and bounce rates?", options: ["Ignore analytics", "Check page views", "Analyzed Google Analytics audience retention curves"] },
+                { id: "ar_12", domain: "content_media", text: "How comfortable are you with rigorous copy editing and AP style formatting?", options: ["Rely on grammar checkers", "Familiar with AP style rules", "Professional copy editing experience"] },
+                { id: "ar_13", domain: "ui_ux", text: "What is your understanding of typographic hierarchy and color theory?", options: ["Basic sense of aesthetics", "Follow design guidelines", "Create custom scalable design tokens"] },
+                { id: "ar_14", domain: "public_policy", text: "How familiar are you with journalistic ethics and media law (e.g., defamation, copyright)?", options: ["Unfamiliar", "Studied in college coursework", "Applied practically in published journalism"] },
+                { id: "ar_15", domain: "psychology", text: "Have you ever designed and executed an IRB-approved psychological survey?", options: ["No", "Assisted in a lab", "Lead researcher on published/approved study"] },
+                { id: "ar_16", domain: "fine_arts", text: "What is your experience with 3D modeling software (e.g., Blender, Maya)?", options: ["Never used", "Followed basic tutorials", "Created rigged 3D character models/environments"] }
             ]
         };
 
+        // --- Master Data (30 Roles & 12-Week Roadmaps) ---
         const masterCareerPool = {
             "STEAM": [
                 {
@@ -824,11 +874,10 @@
                 if (currentUser.phone) {
                     document.getElementById('nav-user-info').classList.remove('hidden');
                     document.getElementById('nav-user-info').classList.add('flex');
-                    document.getElementById('nav-display-name').innerText = `${currentUser.name} (${currentUser.stream})`;
-                    document.getElementById('mentor-college-text').innerText = currentUser.college;
+                    document.getElementById('nav-display-name').innerText = `${currentUser.name} (${currentUser.stream || 'Student'})`;
                     document.getElementById('view-auth').classList.add('hidden');
 
-                    if (surveyData.passions.length > 0) {
+                    if (currentUser.college && currentUser.stream && surveyData.passions.length > 0) {
                         generateRankings();
                         if (selectedCareer) {
                             openRoadmap(selectedCareer.id, true);
@@ -863,15 +912,13 @@
             }
         }
 
-        // --- Authentication Functions ---
+        // --- Authentication Functions (Step 1: Name & Mobile Only) ---
         function requestOTP() {
             const name = document.getElementById('login-name').value.trim();
             const phone = document.getElementById('login-phone').value.trim();
-            const college = document.getElementById('login-college').value;
-            const stream = document.getElementById('login-stream').value;
 
-            if (!name || phone.length !== 10 || !college || !stream) {
-                alert('Please fill in all fields correctly (10-digit mobile number required).');
+            if (!name || phone.length !== 10) {
+                alert('Please enter your full name and a valid 10-digit mobile number.');
                 return;
             }
 
@@ -884,7 +931,7 @@
                 mentorStatus = parsed.mentorStatus || 'not_submitted';
                 isPathwayLocked = parsed.isPathwayLocked || false;
             } else {
-                currentUser = { name, phone, college, stream };
+                currentUser = { name, phone, college: '', stream: '' };
                 surveyData = { passions: [], skillLevel: '', assessmentAnswers: {}, completedMilestones: [] };
                 selectedCareer = null;
                 mentorStatus = 'not_submitted';
@@ -905,13 +952,12 @@
 
             document.getElementById('nav-user-info').classList.remove('hidden');
             document.getElementById('nav-user-info').classList.add('flex');
-            document.getElementById('nav-display-name').innerText = `${currentUser.name} (${currentUser.stream})`;
-            document.getElementById('mentor-college-text').innerText = currentUser.college;
+            document.getElementById('nav-display-name').innerText = `${currentUser.name}`;
 
             document.getElementById('view-auth').classList.add('hidden');
             saveSessionToStorage();
 
-            if (surveyData.passions.length > 0) {
+            if (currentUser.college && currentUser.stream && surveyData.passions.length > 0) {
                 generateRankings();
                 if (selectedCareer) {
                     openRoadmap(selectedCareer.id, true);
@@ -925,7 +971,7 @@
         }
 
         function loginMentor() {
-            const email = document.getElementById('mentor-email').value.trim();
+            const email = document.getElementById('mentor-email').value.trim().toLowerCase();
             const pass = document.getElementById('mentor-pass').value.trim();
 
             if (!email || !pass) {
@@ -933,9 +979,25 @@
                 return;
             }
 
+            // Verify mentor stream dynamically
+            for (const [stream, data] of Object.entries(mentorDirectory)) {
+                if (data.email.toLowerCase() === email) {
+                    currentMentorStream = stream;
+                    currentUser.name = data.name;
+                    break;
+                }
+            }
+
+            if (!currentMentorStream) {
+                alert('Mentor email not recognized. Please use a valid stream mentor email:\nsweety.garg@maharashtra.edu.in (STEAM)\namrita.agrawal@maharashtra.edu.in (Commerce)\nashish.modi@maharashtra.edu.in (Arts)');
+                return;
+            }
+
             document.getElementById('nav-user-info').classList.remove('hidden');
             document.getElementById('nav-user-info').classList.add('flex');
-            document.getElementById('nav-display-name').innerText = `Dr. Sweety Garg (Faculty Mentor)`;
+            document.getElementById('nav-display-name').innerText = `${currentUser.name} (${currentMentorStream} Mentor)`;
+            
+            document.getElementById('mentor-dashboard-badge').innerText = `${currentMentorStream} Faculty Portal`;
 
             document.getElementById('view-auth').classList.add('hidden');
             document.getElementById('view-mentor-dashboard').classList.remove('hidden');
@@ -955,6 +1017,7 @@
             selectedCareer = null;
             mentorStatus = 'not_submitted';
             isPathwayLocked = false;
+            currentMentorStream = null;
 
             document.getElementById('nav-user-info').classList.add('hidden');
             document.getElementById('nav-user-info').classList.remove('flex');
@@ -967,8 +1030,8 @@
             resetAuth();
             document.getElementById('login-name').value = '';
             document.getElementById('login-phone').value = '';
-            document.getElementById('login-college').value = '';
-            document.getElementById('login-stream').value = '';
+            document.getElementById('mentor-email').value = '';
+            document.getElementById('mentor-pass').value = '';
         }
 
         function saveSessionToStorage() {
@@ -1002,10 +1065,29 @@
             }
         }
 
-        // --- Survey Initialization & Dynamic Question Generation ---
+        // --- Survey Initialization (Single Page Dynamic Render Logic) ---
         function initSurveyForm() {
-            const stream = currentUser.stream;
-            document.getElementById('survey-stream-label').innerText = stream;
+            document.getElementById('survey-student-name').innerText = currentUser.name;
+            
+            if (currentUser.college) document.getElementById('survey-college').value = currentUser.college;
+            if (currentUser.stream) document.getElementById('survey-stream').value = currentUser.stream;
+
+            if (currentUser.stream) {
+                onStreamSelected();
+            } else {
+                document.getElementById('survey-questions-area').classList.add('hidden');
+            }
+        }
+
+        function onStreamSelected() {
+            const stream = document.getElementById('survey-stream').value;
+            if (!stream) {
+                document.getElementById('survey-questions-area').classList.add('hidden');
+                return;
+            }
+
+            currentUser.stream = stream; 
+            document.getElementById('survey-questions-area').classList.remove('hidden');
 
             const passionContainer = document.getElementById('passion-checkboxes');
             passionContainer.innerHTML = '';
@@ -1082,6 +1164,14 @@
         }
 
         function submitSurvey() {
+            const college = document.getElementById('survey-college').value;
+            const stream = document.getElementById('survey-stream').value;
+
+            if (!college || !stream) {
+                alert('Please select your College and Primary Academic Stream.');
+                return;
+            }
+
             const checkedPassions = document.querySelectorAll('input[name="passion"]:checked');
             if (checkedPassions.length === 0) {
                 alert('Please select at least 1 passion domain (up to 2).');
@@ -1104,6 +1194,8 @@
                 answers[q.id] = selectedOpt.value;
             }
 
+            currentUser.college = college;
+            currentUser.stream = stream;
             surveyData.passions = Array.from(checkedPassions).map(cb => cb.value);
             surveyData.skillLevel = skillLevelRadio.value;
             surveyData.assessmentAnswers = answers;
@@ -1130,7 +1222,7 @@
             initSurveyForm();
         }
 
-        // --- Algorithmic AI Scoring & Ranking Engine across 10 Roles ---
+        // --- Algorithmic AI Scoring & Ranking Engine ---
         function generateRankings() {
             const stream = currentUser.stream;
             const availableCareers = masterCareerPool[stream] || [];
@@ -1202,6 +1294,9 @@
             if (isPathwayLocked) {
                 retakeBtn.classList.add('opacity-50', 'cursor-not-allowed');
                 retakeBtn.title = "Pathway is locked. Retaking survey is disabled.";
+            } else {
+                retakeBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                retakeBtn.title = "";
             }
 
             const top3 = currentRankedCareers.slice(0, 3);
@@ -1309,6 +1404,10 @@
             const naukriSearchKeyword = encodeURIComponent(selectedCareer.title.toLowerCase().replace(/[^a-z0-9 ]/g, '').trim().replace(/\s+/g, '-'));
             document.getElementById('naukri-portal-link').href = `https://www.naukri.com/${naukriSearchKeyword}-jobs-in-maharashtra`;
 
+            if (currentUser.stream && mentorDirectory[currentUser.stream]) {
+                document.getElementById('assigned-mentor-name').innerText = mentorDirectory[currentUser.stream].name;
+            }
+
             updateMentorBadgeUI();
 
             const weeksContainer = document.getElementById('weeks-container');
@@ -1367,7 +1466,13 @@
             mentorStatus = 'pending';
             saveSessionToStorage();
             updateMentorBadgeUI();
-            alert(`Your roadmap for "${selectedCareer.title}" has been successfully submitted to Dr. Sweety Garg for review.`);
+            
+            const mentorName = mentorDirectory[currentUser.stream].name;
+            alert(`Your roadmap for "${selectedCareer.title}" has been successfully submitted to ${mentorName} for review.`);
+            
+            if (!document.getElementById('view-mentor-dashboard').classList.contains('hidden')) {
+                renderMentorSubmissions();
+            }
         }
 
         function updateMentorBadgeUI() {
@@ -1424,7 +1529,12 @@
             pendingContainer.innerHTML = '';
             approvedContainer.innerHTML = '';
 
-            const submissions = JSON.parse(localStorage.getItem('pathfinder_global_submissions') || '[]');
+            let submissions = JSON.parse(localStorage.getItem('pathfinder_global_submissions') || '[]');
+
+            // Filter submissions by the logged-in mentor's stream
+            if (currentMentorStream) {
+                submissions = submissions.filter(s => s.stream === currentMentorStream);
+            }
 
             const pendingItems = submissions.filter(s => s.status === 'pending' || s.status === 'revision');
             const approvedItems = submissions.filter(s => s.status === 'approved');
